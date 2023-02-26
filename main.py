@@ -1,16 +1,51 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from classes.Button import Button
+import pygame
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def stage1():
+    global current_stage
+    """
+    stage settings
+    
+    """
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+
+
+def stage_start():
+    global current_stage
+    """
+    stage settings
+
+    """
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+
+
+# Main function to manage stages
+def main():
+    global current_stage
+    # Setting up pygame window
+    pygame.init()
+    pygame.display.set_caption("Ur Mom")
+
+    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+    # Game stages loop
+    while current_stage != "exit":
+        if current_stage == "start":
+            stage_start()
+        elif current_stage == "stage1":
+            stage1()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    current_stage = "start"  # A variable keep current activity name to manage game screens
+    main()
