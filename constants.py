@@ -2,6 +2,10 @@
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
+# Constants for customer class
+MIN_INGREDIENTS_REQUESTED = 0
+MAX_INGREDIENTS_REQUESTED = 5
+
 # Title screen size and location on the screen
 TITLE_SCREEN_WIDTH = int(WINDOW_WIDTH / (2 + (2 / 3)))
 TITLE_SCREEN_HEIGHT = int(WINDOW_HEIGHT / 3)
