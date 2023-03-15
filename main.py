@@ -1,6 +1,6 @@
 from classes.Button import Button
 import pygame
-
+from constants import *
 
 def stage1():
     global current_stage
@@ -21,7 +21,9 @@ def stage_start():
     stage settings
 
     """
+    background = pygame.image.load("../leonardo is rolling ")
     while True:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
