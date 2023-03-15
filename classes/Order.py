@@ -18,3 +18,12 @@ class Order:
         for ingredient in self.ingredients:
             ingredients_to_display.append(ingredient)
         return ingredients_to_display
+
+    def compare(self, my_shawarma):
+        """
+        Future function compares THIS imagination shawarma and shawarma the user did
+
+        :param my_shawarma:
+        :return: percent 0 to 100
+        """
+        pass
