@@ -20,6 +20,6 @@ class Button:
         self.width = width
         self.height = height
 
-    def get_pressed(self, mouse_pos):
+    def mouse_on(self, mouse_pos):
         return self.x_pos <= mouse_pos[0] < self.x_pos + self.width\
                and self.y_pos <= mouse_pos[1] < self.y_pos + self.height

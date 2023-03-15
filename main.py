@@ -1,18 +1,35 @@
 from classes.Button import Button
 import pygame
 from constants import *
+from constants import *
+from helpers import *
+from buttons import queue_stage_button_dictionary
 
-def stage1():
+
+def stage_queue():
     global current_stage
-    """
-    stage settings
-    
-    """
+
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+    take_order_dialog_window = pygame.image.load("images/other/take_order_dialog_window.png")
     while True:
         for event in pygame.event.get():
+            mouse_pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
+                if queue_stage_button_dictionary["take_order"].mouse_on(mouse_pos):
+                    current_stage = "order"
+                    return None
+            if mouse_on_any_button(queue_stage_button_dictionary, mouse_pos):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        screen.blit(background_image, (0, 0))
+        screen.blit(take_order_dialog_window, (TAKE_ORDER_X_POS, TAKE_ORDER_Y_POS))
+        pygame.display.flip()
 
 
 def stage_start():
@@ -35,19 +52,18 @@ def main():
     global current_stage
     # Setting up pygame window
     pygame.init()
-    pygame.display.set_caption("Ur Mom")
+    pygame.display.set_caption("Shawarmaria")
 
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-
+    current_stage = "queue"
     # Game stages loop
     while current_stage != "exit":
         if current_stage == "start":
             stage_start()
-        elif current_stage == "stage1":
-            stage1()
+        elif current_stage == "queue":
+            stage_queue()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    current_stage = "start"  # A variable keep current activity name to manage game screens
+    global current_stage
     main()
