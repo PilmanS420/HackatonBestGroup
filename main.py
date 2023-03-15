@@ -1,9 +1,8 @@
 from classes.Button import Button
 import pygame
 from constants import *
-from constants import *
 from helpers import *
-from buttons import queue_stage_button_dictionary
+from buttons import *
 
 
 def stage_queue():
@@ -32,33 +31,74 @@ def stage_queue():
         pygame.display.flip()
 
 
+def stage_kosher():
+    global current_stage
+    global kosher
+    """
+    stage settings
+    
+    """
+    background = pygame.image.load("images/background_images/kosher_or_not_screen.png")
+    background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
+    while True:
+        screen.blit(background, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if kosher_button_dictionary["kosher"].mouse_on(pos):
+                    kosher = True
+                    current_stage = "exit"
+                    return None
+                elif kosher_button_dictionary["not kosher"].mouse_on(pos):
+                    kosher = False
+                    current_stage = "exit"
+                    return None
+        pygame.display.flip()
+
+
 def stage_start():
     global current_stage
     """
     stage settings
 
     """
-    background = pygame.image.load("../leonardo is rolling ")
+    background = pygame.image.load("images/background_images/main menu screen.png")
+    background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
     while True:
-
+        screen.blit(background, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if menu_button_dictionary["start"].mouse_on(pos):
+                    current_stage = "kosher"
+                    return None
+                if menu_button_dictionary["exit"].mouse_on(pos):
+                    current_stage = "exit"
+                    return None
+        pygame.display.flip()
 
 
 # Main function to manage stages
 def main():
     global current_stage
+    global kosher
     # Setting up pygame window
     pygame.init()
     pygame.display.set_caption("Shawarmaria")
 
-    current_stage = "queue"
+    current_stage = "start"
     # Game stages loop
     while current_stage != "exit":
         if current_stage == "start":
             stage_start()
+        elif current_stage == "kosher":
+            stage_kosher()
         elif current_stage == "queue":
             stage_queue()
 
