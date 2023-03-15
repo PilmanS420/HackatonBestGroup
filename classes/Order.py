@@ -1,15 +1,20 @@
 from constants import *
+
+
 class Order:
-    def __init__(self, ingredients = None, meat_type = None):
-        self.ingredients = []
+    def __init__(self, ingredients_left=None, ingredients_middle=None, ingredients_right=None):
+        # The shawarma consists of 3 invisible parts, to ensure you putted same ingredients count on all shawarma
 
-    def add_ingredient(self, ingredient):
-        if not (ingredient in self.ingredients) or not (len(self.ingredients) == MAX_INGREDIENTS_REQUESTED):
-            self.ingredients.append(ingredient)
+        self.ingredients = [ingredients_left, ingredients_middle, ingredients_right]  # Three parts are dictionaries
 
-    def check_customer(self, customer):
-        correct_order = True
-        for order_ingredient in self.ingredients:
-            if order_ingredient not in customer.get_ingredients():
-                correct_order = False
-        return correct_order
+    def add_ingredient(self, ingredient, amount, zone):
+        if ingredient in self.ingredients[zone]:
+            self.ingredients[zone][ingredient] += amount
+        else:
+            self.ingredients[zone][ingredient] = amount
+
+    def order_to_present(self):
+        ingredients_to_display = []
+        for ingredient in self.ingredients:
+            ingredients_to_display.append(ingredient)
+        return ingredients_to_display
