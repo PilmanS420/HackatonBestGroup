@@ -12,8 +12,8 @@ def stage_queue():
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     take_order_dialog_window = pygame.image.load("images/other/take_order_dialog_window.png")
     while True:
+        mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
-            mouse_pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
@@ -22,10 +22,10 @@ def stage_queue():
                 if queue_stage_button_dictionary["take_order"].mouse_on(mouse_pos):
                     current_stage = "order"
                     return None
-            if mouse_on_any_button(queue_stage_button_dictionary, mouse_pos):
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-            else:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        if mouse_on_any_button(queue_stage_button_dictionary, mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.blit(background_image, (0, 0))
         screen.blit(take_order_dialog_window, (TAKE_ORDER_X_POS, TAKE_ORDER_Y_POS))
         pygame.display.flip()
@@ -84,6 +84,30 @@ def stage_start():
         pygame.display.flip()
 
 
+def stage_order():
+    global current_stage
+
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/33333.jpg"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+    order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE)
+
+    while True:
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
+        if mouse_on_any_button(stages_navigation_button_dictionary, mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        screen.blit(background_image, (0, 0))
+        screen.blit(order_image, ORDER_POS)
+        pygame.display.flip()
+
+
 # Main function to manage stages
 def main():
     global current_stage
@@ -101,6 +125,8 @@ def main():
             stage_kosher()
         elif current_stage == "queue":
             stage_queue()
+        elif current_stage == "order":
+            stage_order()
 
 
 # Press the green button in the gutter to run the script.
