@@ -5,7 +5,7 @@ from constants import *
 
 # Dictionary for buttons for moving from screen to screen:
 ## Buttons for the screens at the bottom: TODO: replace the names of the indexes
-screen_navigation_button_dictionary = {"customer": Button(*SCREEN_BUTTON_CUSTOMER_LOCATION), "precooking": Button(*SCREEN_BUTTON_PRECOOKING_LOCATION), "cooking": Button(*SCREEN_BUTTON_COOKING_LOCATION), "finishing": Button(*SCREEN_BUTTON_FINISHING_LOCATION)}
+screen_navigation_button_dictionary = {"order station": Button(*SCREEN_BUTTON_ORDER_LOCATION), "bread station": Button(*SCREEN_BUTTON_BREAD_LOCATION), "cooking station": Button(*SCREEN_BUTTON_COOKING_LOCATION), "topping station": Button(*SCREEN_BUTTON_TOPPING_LOCATION)}
 
 ## Buttons for the title screen:
 menu_button_dictionary = {"start": Button(*START_BUTTON_LOCATION), "exit": Button(*EXIT_BUTTON_LOCATION)}

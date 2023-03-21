@@ -11,23 +11,19 @@ def stage_queue():
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     take_order_dialog_window = pygame.image.load("images/other/take_order_dialog_window.png")
-    while True:
+    while current_stage == "queue":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse_pos)
-                if queue_stage_button_dictionary["take_order"].mouse_on(mouse_pos):
+                if queue_stage_button_dictionary["take_order"].clicked_on(mouse_pos):
                     current_stage = "order"
                     return None
-        if mouse_on_any_button(queue_stage_button_dictionary, mouse_pos):
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        else:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-        screen.blit(background_image, (0, 0))
-        screen.blit(take_order_dialog_window, (TAKE_ORDER_X_POS, TAKE_ORDER_Y_POS))
+        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(take_order_dialog_window, (TAKE_ORDER_X, TAKE_ORDER_Y))
+        current_stage = level_buttons(current_stage)
         pygame.display.flip()
 
 
@@ -40,22 +36,26 @@ def stage_kosher():
     """
     background = pygame.image.load("images/background_images/kosher_or_not_screen.png")
     background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
-    while True:
-        screen.blit(background, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+    while current_stage == "kosher":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            mouse_pos = pygame.mouse.get_pos()
+            found_mouse_on = False
+            for button in kosher_button_dictionary.values():
+                if not found_mouse_on:
+                    found_mouse_on = button.mouse_on(mouse_pos)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if kosher_button_dictionary["kosher"].mouse_on(pos):
+                if kosher_button_dictionary["kosher"].clicked_on(mouse_pos):
                     kosher = True
-                    current_stage = "exit"
+                    current_stage = "queue"
                     return None
-                elif kosher_button_dictionary["not kosher"].mouse_on(pos):
+                elif kosher_button_dictionary["not kosher"].clicked_on(mouse_pos):
                     kosher = False
-                    current_stage = "exit"
+                    current_stage = "queue"
                     return None
+        screen.blit(background, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         pygame.display.flip()
 
 
@@ -65,20 +65,24 @@ def stage_start():
     stage settings
 
     """
-    background = pygame.image.load("images/background_images/main menu screen.png")
+    background = pygame.image.load("images/background_images/main_menu_screen.png")
     background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
-    while True:
+    while current_stage == "start":
         screen.blit(background, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            mouse_pos = pygame.mouse.get_pos()
+            found_mouse_on = False
+            for button in menu_button_dictionary.values():
+                if not found_mouse_on:
+                    found_mouse_on = button.mouse_on(mouse_pos)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if menu_button_dictionary["start"].mouse_on(pos):
+                if menu_button_dictionary["start"].clicked_on(mouse_pos):
                     current_stage = "kosher"
                     return None
-                if menu_button_dictionary["exit"].mouse_on(pos):
+                if menu_button_dictionary["exit"].clicked_on(mouse_pos):
                     current_stage = "exit"
                     return None
         pygame.display.flip()
@@ -87,11 +91,11 @@ def stage_start():
 def stage_order():
     global current_stage
 
-    background_image = pygame.transform.scale(pygame.image.load("images/background_images/33333.jpg"),
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE)
 
-    while True:
+    while current_stage == "order":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -99,12 +103,9 @@ def stage_order():
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
-        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos):
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        else:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-        screen.blit(background_image, (0, 0))
+        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(order_image, ORDER_POS)
+        current_stage = level_buttons(current_stage)
         pygame.display.flip()
 
 
@@ -116,7 +117,6 @@ def main():
     pygame.init()
     pygame.display.set_caption("Shawarmaria")
 
-    current_stage = "start"
     # Game stages loop
     while current_stage != "exit":
         if current_stage == "start":
