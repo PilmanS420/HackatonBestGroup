@@ -99,7 +99,7 @@ def stage_order():
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
-        if mouse_on_any_button(stages_navigation_button_dictionary, mouse_pos):
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
