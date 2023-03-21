@@ -87,7 +87,7 @@ def stage_start():
 def stage_order():
     global current_stage
 
-    background_image = pygame.transform.scale(pygame.image.load("images/background_images/33333.jpg"),
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/order.jpg"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE)
 
@@ -108,6 +108,31 @@ def stage_order():
         pygame.display.flip()
 
 
+def stage_ingredients():
+    global current_stage
+
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"), (WINDOW_WIDTH, WINDOW_HEIGHT))
+    spoon_image = pygame.transform.scale(pygame.image.load("images/other/spoon.png"), (160, 25))
+
+    # Ingredient images
+    # i_cucumber =
+    while True:
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        screen.blit(background_image, (0, 0))
+        screen.blit(spoon_image, (100, 100))
+        pygame.display.flip()
+
+
 # Main function to manage stages
 def main():
     global current_stage
@@ -116,7 +141,6 @@ def main():
     pygame.init()
     pygame.display.set_caption("Shawarmaria")
 
-    current_stage = "start"
     # Game stages loop
     while current_stage != "exit":
         if current_stage == "start":
@@ -127,6 +151,8 @@ def main():
             stage_queue()
         elif current_stage == "order":
             stage_order()
+        elif current_stage == "ingredients":
+            stage_ingredients()
 
 
 # Press the green button in the gutter to run the script.
