@@ -3,6 +3,7 @@ import pygame
 from constants import *
 from helpers import *
 from buttons import *
+from surfaces import *
 
 
 def stage_queue():
@@ -114,6 +115,7 @@ def stage_ingredients():
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
+    current_topping = "None"
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -122,6 +124,9 @@ def stage_ingredients():
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
+                for topping in toppings_stage_button_dictionary:
+                    if toppings_stage_button_dictionary[topping].mouse_on(mouse_pos):
+                        current_topping = topping
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
                 mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
