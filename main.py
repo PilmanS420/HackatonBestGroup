@@ -110,12 +110,13 @@ def stage_order():
         pygame.display.flip()
 
 
-def stage_ingredients():
+def stage_toppings():
     global current_stage
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     current_topping = "None"
+    spoon_cursor = False  # Variable showing if user holds a spoon and don't need a default cursor
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -123,17 +124,26 @@ def stage_ingredients():
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse_pos)
-                for topping in toppings_stage_button_dictionary:
+                print(mouse_pos)  # TODO: delete this print
+                for topping in toppings_stage_button_dictionary:  # A cycle checking if one of toppings has taken
                     if toppings_stage_button_dictionary[topping].mouse_on(mouse_pos):
-                        current_topping = topping
-        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
-                mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        else:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                        if topping == current_topping:
+                            current_topping = "None"
+                            spoon_cursor = False
+                            pygame.mouse.set_visible(True)
+                        else:
+                            current_topping = topping
+                            spoon_cursor = True
+                            pygame.mouse.set_visible(False)
         screen.blit(background_image, (0, 0))
-        # screen.blit(spoon_image, mouse_pos)
+        if spoon_cursor:
+            screen.blit(spoon_images[current_topping], mouse_pos)
+        else:
+            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
+                    mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         pygame.display.flip()
 
 
@@ -155,8 +165,8 @@ def main():
             stage_queue()
         elif current_stage == "order":
             stage_order()
-        elif current_stage == "ingredients":
-            stage_ingredients()
+        elif current_stage == "toppings":
+            stage_toppings()
 
 
 # Press the green button in the gutter to run the script.

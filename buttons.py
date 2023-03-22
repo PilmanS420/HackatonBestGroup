@@ -19,6 +19,6 @@ queue_stage_button_dictionary = {"take_order": Button(*TAKE_ORDER_BUTTON_LOCATIO
 toppings_stage_button_dictionary = {"harif": Button(LEFT_TOPPINGS_X_POS, LEFT_TOPPINGS_Y_POS, TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
                                     "humus": Button(LEFT_TOPPINGS_X_POS, LEFT_TOPPINGS_Y_POS + TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET,
                                                     TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
-                                    "cucumbers": Button(LEFT_TOPPINGS_X_POS,
+                                    "cucumber": Button(LEFT_TOPPINGS_X_POS,
                                                         LEFT_TOPPINGS_Y_POS + 2 * (TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET),
                                                         TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT)}
