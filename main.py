@@ -22,9 +22,19 @@ def stage_queue():
                 if queue_stage_button_dictionary["take_order"].clicked_on(mouse_pos):
                     current_stage = "order"
                     return None
+                for intent in screen_navigation_button_dictionary:
+                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                        if intent != current_stage:
+                            current_stage = intent
+                            return None
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
+                mouse_on_any_button(queue_stage_button_dictionary, mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(take_order_dialog_window, (TAKE_ORDER_X, TAKE_ORDER_Y))
-        current_stage = level_buttons(current_stage)
         pygame.display.flip()
 
 
@@ -104,9 +114,14 @@ def stage_order():
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
+                for intent in screen_navigation_button_dictionary:
+                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                        if intent != current_stage:
+                            current_stage = intent
+                            return None
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(order_image, ORDER_POS)
-        current_stage = level_buttons(current_stage)
         pygame.display.flip()
 
 
@@ -116,7 +131,7 @@ def stage_toppings():
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     current_topping = "None"
-    spoon_cursor = False  # Variable showing if user holds a spoon and don't need a default cursor
+    spoon_cursor = False  # Variable presenting if user holds a spoon and don't need a default cursor
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -130,15 +145,33 @@ def stage_toppings():
                         if topping == current_topping:
                             current_topping = "None"
                             spoon_cursor = False
-                            pygame.mouse.set_visible(True)
                         else:
                             current_topping = topping
                             spoon_cursor = True
-                            pygame.mouse.set_visible(False)
-        screen.blit(background_image, (0, 0))
+                for intent in screen_navigation_button_dictionary:
+                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                        if intent != current_stage:
+                            current_stage = intent
+                            return None
+
+        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        # At the bottom of the screen need to be a default cursor and not a spoon
+        if mouse_pos[1] > 940:
+            spoon_cursor = False
+        elif current_topping != "None":
+            # When mouse comes back from the bottom navigation bar, cursor turns to spoon if there is any ingredient on it
+            spoon_cursor = True
+
+        # Custom cursor bliting and default cursor changing
         if spoon_cursor:
-            screen.blit(spoon_images[current_topping], mouse_pos)
+            pygame.mouse.set_visible(False)
+            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
+                screen.blit(rotated_spoon_images[current_topping], (mouse_pos[0], mouse_pos[1] - SPOON_HEIGHT * 3))
+            else:
+                screen.blit(spoon_images[current_topping], mouse_pos)
         else:
+            pygame.mouse.set_visible(True)
             if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
                     mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -167,6 +200,7 @@ def main():
             stage_order()
         elif current_stage == "toppings":
             stage_toppings()
+    pygame.quit()
 
 
 # Press the green button in the gutter to run the script.
