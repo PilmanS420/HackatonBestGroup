@@ -112,7 +112,7 @@ def stage_ingredients():
     global current_stage
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"), (WINDOW_WIDTH, WINDOW_HEIGHT))
-    spoon_image = pygame.transform.scale(pygame.image.load("images/other/spoon.png"), (160, 25))
+    spoon_image = pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon.png"), (160, 25))
 
     # Ingredient images
     # i_cucumber =
