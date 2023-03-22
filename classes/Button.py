@@ -26,9 +26,8 @@ class Button:
 
     def mouse_on(self, mouse_pos):
         if self.x_pos <= mouse_pos[0] < self.x_pos + self.width and self.y_pos <= mouse_pos[1] < self.y_pos + self.height:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             return True
-        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        return False
 
     def clicked_on(self, mouse_pos):
         if self.x_pos <= mouse_pos[0] < self.x_pos + self.width and self.y_pos <= mouse_pos[1] < self.y_pos + self.height:
