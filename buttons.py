@@ -16,9 +16,9 @@ kosher_button_dictionary = {"kosher": Button(*KOSHER_BUTTON_LOCATION), "not kosh
 # TODO: egor, replace this TODO with a description for this dictionary
 queue_stage_button_dictionary = {"take_order": Button(*TAKE_ORDER_BUTTON_LOCATION)}
 
-toppings_stage_button_dictionary = {"harif": Button(LEFT_TOPPINGS_X_POS, LEFT_TOPPINGS_Y_POS, TOPPING_WIDTH, TOPPING_HEIGHT),
-                                    "humus": Button(LEFT_TOPPINGS_X_POS, LEFT_TOPPINGS_Y_POS + TOPPING_HEIGHT + TOPPINGS_OFFSET,
-                                                    TOPPING_WIDTH, TOPPING_HEIGHT),
+toppings_stage_button_dictionary = {"harif": Button(LEFT_TOPPINGS_X_POS, LEFT_TOPPINGS_Y_POS, TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
+                                    "humus": Button(LEFT_TOPPINGS_X_POS, LEFT_TOPPINGS_Y_POS + TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET,
+                                                    TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
                                     "cucumbers": Button(LEFT_TOPPINGS_X_POS,
-                                                        LEFT_TOPPINGS_Y_POS + 2 * (TOPPING_HEIGHT + TOPPINGS_OFFSET),
-                                                        TOPPING_WIDTH, TOPPING_HEIGHT)}
+                                                        LEFT_TOPPINGS_Y_POS + 2 * (TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET),
+                                                        TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT)}

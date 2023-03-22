@@ -112,11 +112,22 @@ def stage_order():
 def stage_ingredients():
     global current_stage
 
-    background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"), (WINDOW_WIDTH, WINDOW_HEIGHT))
-    spoon_image = pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon.png"), (160, 25))
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+    spoon_images = {
+        "harif": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_harif.png"), (160, 25)),
+        "humus": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_humus.png"), (160, 25)),
+        "cucumber": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_cucumber.png"),
+                                           (160, 25)),
+        "thina": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_thina.png"), (160, 25)),
+        "salat": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_salat.png"), (160, 25)),
+        "onion": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_onion.png"), (160, 25))}
 
-    # Ingredient images
-    # i_cucumber =
+    topping_images = {
+        "harif": pygame.transform.scale(pygame.image.load("images/ingredients/harif.png"), (20, 20)),
+        "humus": pygame.transform.scale(pygame.image.load("images/ingredients/humus.png"), (20, 20)),
+
+    }
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -131,7 +142,7 @@ def stage_ingredients():
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.blit(background_image, (0, 0))
-        screen.blit(spoon_image, (100, 100))
+        screen.blit(spoon_image, mouse_pos)
         pygame.display.flip()
 
 
