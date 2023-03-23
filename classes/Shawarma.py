@@ -10,3 +10,6 @@ class Shawarma:
 
     def show(self, x_pos, y_pos):
         screen.blit(laffas_images[self.laffa], (x_pos, y_pos))
+
+    def add_topping(self, topping):
+        self.toppings.append(topping)

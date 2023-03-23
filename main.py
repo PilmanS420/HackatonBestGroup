@@ -4,7 +4,9 @@ from constants import *
 from helpers import *
 from buttons import *
 from surfaces import *
+from classes.Ingredient import Ingredient
 from classes.FallingIngredient import FallingIngredient
+from classes.Shawarma import Shawarma
 
 
 def stage_queue():
@@ -134,6 +136,7 @@ def stage_toppings():
     current_topping = "None"
     spoon_cursor = False  # Variable presenting if user holds a spoon and don't need a default cursor
     falling_ingredients = []
+    shawarma = Shawarma("Laffa 1")
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -155,13 +158,27 @@ def stage_toppings():
                         if intent != current_stage:
                             current_stage = intent
                             return None
-                # if toppings_falling_area_button.mouse_on(mouse_pos) and spoon_cursor:
-                #     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
-                #                                                  mouse_pos[1] - LAFFA_Y_POS - TOPPINGS_ABOVE_LAFFA_OFFSET))
+                if toppings_falling_area_button.mouse_on(mouse_pos) and spoon_cursor:
+                    falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
+                                                                 mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(laffas_images["Type 1"], (LAFFA_X_POS, LAFFA_Y_POS))
+
+        # Falling toppings updating and bliting
+        indexes_to_delete = []
+        for i in range(len(falling_ingredients)):
+            if falling_ingredients[i].is_landed(LAFFA_Y_POS):
+                shawarma.add_topping(falling_ingredients[i])
+                indexes_to_delete.append(i)
+            falling_ingredients[i].update(LAFFA_Y_POS)
+            falling_ingredients[i].show(LAFFA_X_POS, falling_ingredients[i].real_y_pos)
+        # Cleaning - already felt toppings are removing
+        for i in range(len(falling_ingredients), -1, -1):
+            if i in indexes_to_delete:
+                del falling_ingredients[i]
+
         # At the bottom of the screen need to be a default cursor and not a spoon
         if mouse_pos[1] > 940:
             spoon_cursor = False
