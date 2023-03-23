@@ -22,5 +22,10 @@ topping_images = {
     "salat": pygame.transform.scale(pygame.image.load("images/ingredients/salat.png"), (TOPPING_WIDTH, TOPPING_HEIGHT)),
     "onion": pygame.transform.scale(pygame.image.load("images/ingredients/onion.png"), (TOPPING_WIDTH, TOPPING_HEIGHT))
 }
-
-screen_buttons_image = pygame.transform.scale(pygame.image.load("images/background_images/screen_buttons.png"), (WINDOW_WIDTH, WINDOW_HEIGHT))
+laffas_images = {
+    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+}
+screen_buttons_image = pygame.transform.scale(pygame.image.load("images/background_images/screen_buttons.png"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))

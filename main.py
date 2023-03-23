@@ -4,6 +4,7 @@ from constants import *
 from helpers import *
 from buttons import *
 from surfaces import *
+from classes.FallingIngredient import FallingIngredient
 
 
 def stage_queue():
@@ -132,6 +133,7 @@ def stage_toppings():
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     current_topping = "None"
     spoon_cursor = False  # Variable presenting if user holds a spoon and don't need a default cursor
+    falling_ingredients = []
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -153,9 +155,13 @@ def stage_toppings():
                         if intent != current_stage:
                             current_stage = intent
                             return None
+                # if toppings_falling_area_button.mouse_on(mouse_pos) and spoon_cursor:
+                #     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
+                #                                                  mouse_pos[1] - LAFFA_Y_POS - TOPPINGS_ABOVE_LAFFA_OFFSET))
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(laffas_images["Type 1"], (LAFFA_X_POS, LAFFA_Y_POS))
         # At the bottom of the screen need to be a default cursor and not a spoon
         if mouse_pos[1] > 940:
             spoon_cursor = False
