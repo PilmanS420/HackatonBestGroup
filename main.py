@@ -166,7 +166,7 @@ def stage_toppings():
         # Custom cursor bliting and default cursor changing
         if spoon_cursor:
             pygame.mouse.set_visible(False)
-            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
+            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or toppings_falling_area_button.mouse_on(mouse_pos):
                 screen.blit(rotated_spoon_images[current_topping], (mouse_pos[0], mouse_pos[1] - SPOON_HEIGHT * 3))
             else:
                 screen.blit(spoon_images[current_topping], mouse_pos)
