@@ -6,7 +6,7 @@ from surfaces import screen_buttons_image
 # There are help functions to use in the project
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-current_stage = "toppings"  # A variable keep current activity name to manage game screens
+current_stage = "queue"  # A variable keep current activity name to manage game screens
 
 
 def mouse_on_any_button(buttons_dict, mouse_pos):

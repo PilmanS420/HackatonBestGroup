@@ -29,3 +29,6 @@ laffas_images = {
 }
 screen_buttons_image = pygame.transform.scale(pygame.image.load("images/background_images/screen_buttons.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
+
+# Customers
+bob_customer = {"come": []}
