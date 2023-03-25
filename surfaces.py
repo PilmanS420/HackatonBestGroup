@@ -55,3 +55,4 @@ bob_customer_images = {
         "best": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_laught.png"), CUSTOMER_ORDER_SIZE)]
     }
 }
+meat_images = {}  # TODO: add meat images

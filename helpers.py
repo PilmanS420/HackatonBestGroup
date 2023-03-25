@@ -3,7 +3,7 @@ from constants import *
 from buttons import screen_navigation_button_dictionary
 from surfaces import *
 import random
-
+from classes.Order import Order
 from classes.Customer import Customer
 
 # There are help functions to use in the project
@@ -43,4 +43,17 @@ def get_random_customer():
 
 
 def get_random_order():
-    return
+    laffa = random.choice(LAFFAS_LIST)
+    has_meat = random.randint(1, 5)
+    if has_meat >= 4:
+        meat = True
+    else:
+        meat = False
+    toppings_count = random.randint(MIN_INGREDIENTS_REQUESTED, MAX_INGREDIENTS_REQUESTED)
+    potential_ingredients = list(INGREDIENTS_LIST)
+    final_ingredients = []
+    for i in range(toppings_count):
+        topping_num = random.randint(0, len(potential_ingredients) - 1)
+        final_ingredients.append(potential_ingredients[topping_num])
+        del potential_ingredients[topping_num]
+    return Order(laffa, meat, final_ingredients)

@@ -2,9 +2,11 @@
 WINDOW_WIDTH = 1920
 WINDOW_HEIGHT = 1080
 
-# Constants for customer class
+# Constants for order creation
 MIN_INGREDIENTS_REQUESTED = 0
 MAX_INGREDIENTS_REQUESTED = 5
+INGREDIENTS_LIST = ("harif", "humus", "cucumber", "thina", "salat", "onion")
+LAFFAS_LIST = ("Type 1", "Type 2", "Type 3")
 
 # Background screens size and location on the screen
 BACKGROUND_SCREENS_X = 0

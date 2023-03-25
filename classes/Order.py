@@ -3,10 +3,10 @@ from helpers import *
 
 
 class Order:
-    def __init__(self, laffa):
+    def __init__(self, laffa, meat=True, ingredient_list=[]):
         self.laffa = laffa
-        self.meat = []
-        self.toppings = []
+        self.meat = meat
+        self.toppings = ingredient_list
 
     def show(self, x_pos, y_pos):
         screen.blit(laffas_images[self.laffa], (x_pos, y_pos))
@@ -18,6 +18,9 @@ class Order:
         self.toppings.append(ingredient)
 
     def show_like_order(self):
+        pass
+
+    def show_like_shawarma(self):
         pass
 
     def compare(self, my_shawarma):
