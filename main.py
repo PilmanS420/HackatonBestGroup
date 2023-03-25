@@ -109,6 +109,25 @@ def stage_order():
         pygame.display.flip()
 
 
+def stage_bread():
+    global current_stage
+
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/stage_bread_start.jpg"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+
+    while current_stage == "bread":
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
+        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        current_stage = level_buttons(current_stage)
+        pygame.display.flip()
+
+
 # Main function to manage stages
 def main():
     global current_stage
@@ -116,7 +135,6 @@ def main():
     # Setting up pygame window
     pygame.init()
     pygame.display.set_caption("Shawarmaria")
-
     # Game stages loop
     while current_stage != "exit":
         if current_stage == "start":
@@ -127,6 +145,8 @@ def main():
             stage_queue()
         elif current_stage == "order":
             stage_order()
+        elif current_stage == "bread":
+            stage_bread()
 
 
 # Press the green button in the gutter to run the script.
