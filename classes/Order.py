@@ -1,23 +1,24 @@
 from constants import *
+from helpers import *
 
 
 class Order:
-    def __init__(self, ingredients_left=None, ingredients_middle=None, ingredients_right=None):
-        # The shawarma consists of 3 invisible parts, to ensure you putted same ingredients count on all shawarma
+    def __init__(self, laffa):
+        self.laffa = laffa
+        self.meat = []
+        self.toppings = []
 
-        self.ingredients = [ingredients_left, ingredients_middle, ingredients_right]  # Three parts are dictionaries
+    def show(self, x_pos, y_pos):
+        screen.blit(laffas_images[self.laffa], (x_pos, y_pos))
 
-    def add_ingredient(self, ingredient, amount, zone):
-        if ingredient in self.ingredients[zone]:
-            self.ingredients[zone][ingredient] += amount
-        else:
-            self.ingredients[zone][ingredient] = amount
+    def add_topping(self, topping):
+        self.toppings.append(topping)
 
-    def order_to_present(self):
-        ingredients_to_display = []
-        for ingredient in self.ingredients:
-            ingredients_to_display.append(ingredient)
-        return ingredients_to_display
+    def add_ingredient(self, ingredient):
+        self.toppings.append(ingredient)
+
+    def show_like_order(self):
+        pass
 
     def compare(self, my_shawarma):
         """

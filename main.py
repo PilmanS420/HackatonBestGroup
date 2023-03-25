@@ -6,7 +6,7 @@ from buttons import *
 from surfaces import *
 from classes.Ingredient import Ingredient
 from classes.FallingIngredient import FallingIngredient
-from classes.Shawarma import Shawarma
+from classes.Order import Order
 
 
 def stage_queue():
@@ -14,7 +14,7 @@ def stage_queue():
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
-    take_order_dialog_window = pygame.image.load("images/other/take_order_dialog_window.png")
+
     while current_stage == "queue":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -136,7 +136,7 @@ def stage_toppings():
     current_topping = "None"
     spoon_cursor = False  # Variable presenting if user holds a spoon and don't need a default cursor
     falling_ingredients = []
-    shawarma = Shawarma("Laffa 1")
+    shawarma = Order("Laffa 1")
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():

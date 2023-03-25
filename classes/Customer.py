@@ -19,5 +19,11 @@ class Customer:
     def get_order(self):
         return self.order
 
-    def show(self, position, action):
-        screen.blit(random.choice(self.images[action]), position)
+    def show(self, position):
+        screen.blit(self.current_image, position)
+
+    def change_image(self, action, reaction="normal"):
+        if action == "reaction":
+            self.current_image = random.choice(self.images[action][reaction])
+        else:
+            self.current_image = random.choice(self.images[action])
