@@ -1,20 +1,25 @@
+from settings import *
 from classes.Button import Button
+from helpers import *
 import pygame
 from constants import *
-from helpers import *
 from buttons import *
 from surfaces import *
 from classes.Ingredient import Ingredient
 from classes.FallingIngredient import FallingIngredient
 from classes.Order import Order
+from classes.Customer import Customer
 
 
 def stage_queue():
-    global current_stage
+    global current_stage, current_customer
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
-
+    has_new_coming_customer = False  # A variable set to True when you want to create a new customer
+    new_coming_customer = get_random_customer()  # A customer coming to the first queue
+    waiting_to_order_customers = []  # List of customers are waiting for present their order
+    waiting_to_take_away_customers = []  # List of customers are waiting for take their shawarma
     while current_stage == "queue":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -22,7 +27,10 @@ def stage_queue():
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if queue_stage_button_dictionary["take_order"].clicked_on(mouse_pos):
+                if len(waiting_to_order_customers) > 0 and take_order_button.mouse_on(mouse_pos):
+                    waiting_to_take_away_customers.append(waiting_to_order_customers[0])
+                    current_customer = waiting_to_order_customers[0]
+                    del waiting_to_order_customers[0]
                     current_stage = "order"
                     return None
                 for intent in screen_navigation_button_dictionary:
@@ -31,13 +39,20 @@ def stage_queue():
                             current_stage = intent
                             return None
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
-                mouse_on_any_button(queue_stage_button_dictionary, mouse_pos):
+                (take_order_button.mouse_on(mouse_pos) and len(waiting_to_order_customers) > 0):  # Show the button only if any customer is at queue
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        if has_new_coming_customer:
+            new_coming_customer = get_random_customer()
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        screen.blit(take_order_dialog_window, (TAKE_ORDER_X, TAKE_ORDER_Y))
+        if new_coming_customer.get_position() != CUSTOMER_END_PATH_QUEUE:
+            new_coming_customer.update(-1)
+        else:
+            waiting_to_order_customers.append(new_coming_customer)
+            screen.blit(take_order_dialog_window, (TAKE_ORDER_X, TAKE_ORDER_Y))
+        new_coming_customer.show()
         pygame.display.flip()
 
 
@@ -208,8 +223,6 @@ def main():
     global current_stage
     global kosher
     # Setting up pygame window
-    pygame.init()
-    pygame.display.set_caption("Shawarmaria")
 
     # Game stages loop
     while current_stage != "exit":
@@ -229,4 +242,5 @@ def main():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     global current_stage
+    global current_customer
     main()

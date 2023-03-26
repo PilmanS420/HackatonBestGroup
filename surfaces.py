@@ -1,4 +1,4 @@
-from helpers import *
+from settings import *
 
 take_order_dialog_window = pygame.image.load("images/other/take_order_dialog_window.png")
 

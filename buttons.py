@@ -13,9 +13,10 @@ menu_button_dictionary = {"start": Button(*START_BUTTON_LOCATION), "exit": Butto
 # Buttons for the kosher screen:
 kosher_button_dictionary = {"kosher": Button(*KOSHER_BUTTON_LOCATION), "not kosher": Button(*NOT_KOSHER_LOCATION)}
 
-# TODO: egor, replace this TODO with a description for this dictionary
-queue_stage_button_dictionary = {"take_order": Button(*TAKE_ORDER_BUTTON_LOCATION)}
+# A button represents a text window to take order of a customer at the queue
+take_order_button = Button(*TAKE_ORDER_BUTTON_LOCATION)
 
+# Buttons for topping bowls in the topping stage
 toppings_stage_button_dictionary = {"harif": Button(LEFT_TOPPINGS_X_POS, TOPPINGS_Y_POS, TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
                                     "humus": Button(LEFT_TOPPINGS_X_POS, TOPPINGS_Y_POS + TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET,
                                                     TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
