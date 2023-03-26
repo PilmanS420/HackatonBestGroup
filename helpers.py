@@ -5,6 +5,7 @@ from surfaces import *
 import random
 from classes.Order import Order
 from classes.Customer import Customer
+import math
 
 
 def mouse_on_any_button(buttons_dict, mouse_pos):
@@ -40,3 +41,7 @@ def get_random_order():
         final_ingredients.append(potential_ingredients[topping_num])
         del potential_ingredients[topping_num]
     return Order(laffa, meat, final_ingredients)
+
+
+def customer_steps_imitation(x_pos):
+    return [x_pos, CUSTOMER_START_PATH_QUEUE[1] - abs(50 * math.sin(x_pos / 50))]

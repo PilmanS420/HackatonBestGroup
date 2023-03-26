@@ -9,6 +9,7 @@ from classes.Ingredient import Ingredient
 from classes.FallingIngredient import FallingIngredient
 from classes.Order import Order
 from classes.Customer import Customer
+import math
 
 
 def stage_queue():
@@ -27,6 +28,7 @@ def stage_queue():
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
                 if len(waiting_to_order_customers) > 0 and take_order_button.mouse_on(mouse_pos):
                     waiting_to_take_away_customers.append(waiting_to_order_customers[0])
                     current_customer = waiting_to_order_customers[0]
@@ -47,12 +49,18 @@ def stage_queue():
             new_coming_customer = get_random_customer()
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        if new_coming_customer.get_position() != CUSTOMER_END_PATH_QUEUE:
-            new_coming_customer.update(-1)
+        if new_coming_customer is not None and new_coming_customer.get_position()[0] > CUSTOMER_END_PATH_QUEUE[0]:
+            new_coming_customer.set_position(customer_steps_imitation(new_coming_customer.get_position()[0]))
+            new_coming_customer.update(CUSTOMER_SPEED)
+            new_coming_customer.show()
         else:
-            waiting_to_order_customers.append(new_coming_customer)
-            screen.blit(take_order_dialog_window, (TAKE_ORDER_X, TAKE_ORDER_Y))
-        new_coming_customer.show()
+            if new_coming_customer is not None:
+                new_coming_customer.change_image("queue")
+                waiting_to_order_customers.append(new_coming_customer)
+                new_coming_customer = None
+            screen.blit(take_order_dialog_window, TAKE_ORDER_COORDINATES)
+        for i in waiting_to_order_customers:
+            i.show()
         pygame.display.flip()
 
 
@@ -118,11 +126,13 @@ def stage_start():
 
 
 def stage_order():
-    global current_stage
+    global current_stage, current_customer
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE)
+    current_customer.change_image("order")
+    current_customer.set_position(CUSTOMER_POSITION_ORDER)
 
     while current_stage == "order":
         mouse_pos = pygame.mouse.get_pos()
@@ -139,6 +149,7 @@ def stage_order():
                             return None
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        current_customer.show()
         screen.blit(order_image, ORDER_POS)
         pygame.display.flip()
 

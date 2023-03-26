@@ -31,8 +31,8 @@ class Customer:
         screen.blit(self.current_image, self.position)
 
     def update(self, move_by_x=0, move_by_y=0):
-        self.position[0] += move_by_x
-        self.position[1] += move_by_y
+        self.position[0] += float(move_by_x)
+        self.position[1] += float(move_by_y)
 
     def change_image(self, action, reaction="normal"):
         if action == "reaction":
