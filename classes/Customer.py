@@ -1,6 +1,7 @@
 from settings import *
 from classes.Order import Order
 import random
+from surfaces import empty_text_box, laffas_images, topping_images
 
 
 class Customer:
@@ -39,3 +40,14 @@ class Customer:
             self.current_image = random.choice(self.images[action][reaction])
         else:
             self.current_image = random.choice(self.images[action])
+
+    def show_text_window(self, to_show, ingredient_num=0):  # TODO: add new images to present ingredients better
+        screen.blit(empty_text_box, TEXT_BOX_COORDINATES)
+        if to_show == "meat":
+            pass
+        elif to_show == "laffa":
+            screen.blit(laffas_images[self.order.get_laffa()], TEXT_BOX_COORDINATES)
+        else:
+            screen.blit(topping_images[self.order.get_ingredient(ingredient_num)], TEXT_BOX_COORDINATES)
+
+

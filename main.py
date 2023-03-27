@@ -134,6 +134,12 @@ def stage_order():
     current_customer.change_image("order")
     current_customer.set_position(CUSTOMER_POSITION_ORDER)
 
+    # Variable keeps current ingredient (including laffa and meat) number
+    showing_ingredient_type = "laffa"
+    current_topping_num = 0
+    # Variable keeps count of ingredients into shawarma including laffa and meat
+    toppings_count = current_customer.get_order().get_toppings_count()
+
     while current_stage == "order":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -147,9 +153,28 @@ def stage_order():
                         if intent != current_stage:
                             current_stage = intent
                             return None
+                if on_text_box_button.mouse_on(mouse_pos):
+                    current_customer.change_image("order")
+                    if showing_ingredient_type == "laffa":
+                        if current_customer.get_order().has_meat():
+                            showing_ingredient_type = "meat"
+                        else:
+                            showing_ingredient_type = "topping"
+                    elif showing_ingredient_type == "meat":
+                        showing_ingredient_type = "topping"
+                    else:
+                        current_topping_num += 1
+                    if current_topping_num == toppings_count:
+                        current_stage = "toppings"
+                        return None
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or on_text_box_button.mouse_on(mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         current_customer.show()
+        current_customer.show_text_window(showing_ingredient_type, current_topping_num)
         screen.blit(order_image, ORDER_POS)
         pygame.display.flip()
 

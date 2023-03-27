@@ -1,6 +1,7 @@
 from settings import *
 
 take_order_dialog_window = pygame.transform.scale(pygame.image.load("images/other/take_order_dialog_window.png"), TAKE_ORDER_SIZE)
+empty_text_box = pygame.transform.scale(pygame.image.load("images/other/text_box.png"), TEXT_BOX_SIZE)
 
 spoon_images = {
     "harif": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_harif.png"), (SPOON_WIDTH, SPOON_HEIGHT)),

@@ -32,3 +32,6 @@ toppings_stage_button_dictionary = {"harif": Button(LEFT_TOPPINGS_X_POS, TOPPING
 
 # Variable keeps area for toppings station, where you can throw ingredients on lafa
 toppings_falling_area_button = Button(LAFFA_X_POS, LAFFA_Y_POS - TOPPINGS_ABOVE_LAFFA_OFFSET, LAFFA_WIDTH, LAFFA_HEIGHT)
+
+# Order stage
+on_text_box_button = Button(TEXT_BOX_COORDINATES[0], TEXT_BOX_COORDINATES[1], TEXT_BOX_SIZE[0], TEXT_BOX_SIZE[1])
