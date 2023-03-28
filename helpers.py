@@ -21,8 +21,12 @@ def get_random_customer():
     customer_type = random.choice(CUSTOMER_TYPES)
     if customer_type == "Bob":
         customer_images = bob_customer_images
+    elif customer_type == "Lucy":
+        customer_images = lucy_customer_images
+    elif customer_type == "Jack":
+        customer_images = jack_customer_images
     else:
-        customer_images = bob_customer_images  # TODO: edit to other types
+        customer_images = trollface_customer_images
     return Customer(get_random_order(), waiting, criticism, customer_images, CUSTOMER_START_PATH_QUEUE)
 
 
