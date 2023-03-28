@@ -1,3 +1,5 @@
+import time
+
 from classes.Button import Button
 import pygame
 from constants import *
@@ -128,6 +130,151 @@ def stage_order():
         pygame.display.flip()
 
 
+def stage_bread():
+    global current_stage
+    laffa_1_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"),
+                                           (242, 171))
+    laffa_2_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"),
+                                           (242, 171))
+    laffa_3_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"),
+                                           (242, 171))
+    laffa_1big = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"),
+                                        (605, 428))
+    laffa_2big = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"),
+                                        (605, 428))
+    laffa_3big = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"),
+                                        (605, 428))
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/stage_bread_start.jpg"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+
+    background_image_breadready = pygame.transform.scale(
+        pygame.image.load("images/background_images/stage_bread_ready.jpg"),
+        (WINDOW_WIDTH, WINDOW_HEIGHT))
+
+    background_image_dragging = pygame.transform.scale(pygame.image.load("images/background_images/stage_bread_drag.jpg"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+
+    is_held_before = False
+    laffa_list = []  # laffa images list
+    laffa_1_case = False
+    laffa_2_case = False
+    laffa_3_case = False
+    laffa_1_big_blit = False
+    laffa_2_big_blit = False
+    laffa_3_big_blit = False
+    bread_on_screen = False
+    currently_dragging = False
+    while current_stage == "bread":
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
+                for intent in screen_navigation_button_dictionary:
+                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                        if intent != current_stage:
+                            current_stage = intent
+                            return None
+                if 296 >= mouse_pos[0] >= 165 and 339 >= mouse_pos[1] >= 205:  # laffa 1 pos
+                    is_held_before = True
+                    laffa_1_case = True
+                elif 305 >= mouse_pos[0] >= 171 and 537 >= mouse_pos[1] >= 409:  # laffa 2 pos
+                    is_held_before = True
+                    laffa_2_case = True
+                elif 301 >= mouse_pos[0] >= 170 and 745 >= mouse_pos[1] >= 612:  # laffa 3 pos
+                    is_held_before = True
+                    laffa_3_case = True
+
+                if bread_on_screen:
+                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530:
+                        current_stage = stage_toppings()  #TODO: MOVE TO STAGE COOKING AND TROUBLESHOOT
+
+        if is_held_before:  # detect if the mouse was pressed on a laffa
+            currently_dragging = True
+            pygame.mouse.set_visible(False)
+            if pygame.mouse.get_pressed(3)[0]:  # detect if the mouse is being held
+                if laffa_1_case:
+                    if not (laffa_1_image in laffa_list):
+                        laffa_list.append(laffa_1_image)
+                elif laffa_2_case:
+                    if not (laffa_2_image in laffa_list):
+                        laffa_list.append(laffa_2_image)
+                elif laffa_3_case:
+                    if not (laffa_3_image in laffa_list):
+                        laffa_list.append(laffa_3_image)
+            else:
+                currently_dragging = False
+                pygame.mouse.set_visible(True)
+                hold_release_cords = mouse_pos
+                if 726 >= hold_release_cords[1] >= 466 and 1309 >= hold_release_cords[0] >= 721:
+                    bread_on_screen = True
+                    if laffa_1_case:
+                        laffa_1_big_blit = True
+                    elif laffa_2_case:
+                        laffa_2_big_blit = True
+                    elif laffa_3_case:
+                        laffa_3_big_blit = True
+                else:
+                    bread_on_screen = False
+                    laffa_3_big_blit = False
+                    laffa_2_big_blit = False
+                    laffa_1_big_blit = False
+
+                if laffa_1_case:
+                    laffa_list.remove(laffa_1_image)
+                    laffa_1_case = False
+                elif laffa_2_case:
+                    laffa_list.remove(laffa_2_image)
+                    laffa_2_case = False
+                elif laffa_3_case:
+                    laffa_list.remove(laffa_3_image)
+                    laffa_3_case = False
+                is_held_before = False
+
+        if not bread_on_screen:  # blit new background
+            if currently_dragging:
+                screen.blit(background_image_dragging, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+            else:
+                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        else:
+           screen.blit(background_image_breadready,
+                            (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit existing background
+
+        if laffa_1_big_blit:  # blit big laffas
+            screen.blit(laffa_1big, (640, 446))
+        elif laffa_2_big_blit:
+            screen.blit(laffa_2big, (640, 446))
+        elif laffa_3_big_blit:
+            screen.blit(laffa_3big, (640, 446))
+
+        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit small dragging laffas
+        if len(laffa_list) >= 1:
+            screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))
+
+
+
+        # working hold mechanism for troubleshooting:
+
+        # if is_held_before:  # detect if the mouse was pressed on a laffa
+        #     print("GOT to held before")
+        #     if pygame.mouse.get_pressed(3)[0]:  # detect if the mouse is being held
+        #         print("got to mouse held")
+        #         if not (laffa_1_image in laffa_list):
+        #             laffa_list.append(laffa_1_image)
+        #     else:
+        #         laffa_list.remove(laffa_1_image)
+        #         laffa_1_case = False
+        #         is_held_before = False
+        # screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        # screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        # if len(laffa_list) >= 1:
+        #     screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))
+
+        pygame.display.flip()
+
+
 def stage_toppings():
     global current_stage
 
@@ -160,7 +307,9 @@ def stage_toppings():
                             return None
                 if toppings_falling_area_button.mouse_on(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
-                                                                 mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
+                                                                 mouse_pos[
+                                                                     1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET,
+                                                                 mouse_pos[1]))
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
@@ -189,13 +338,14 @@ def stage_toppings():
         # Custom cursor bliting and default cursor changing
         if spoon_cursor:
             pygame.mouse.set_visible(False)
-            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or toppings_falling_area_button.mouse_on(mouse_pos):
+            if mouse_on_any_button(toppings_stage_button_dictionary,
+                                   mouse_pos) or toppings_falling_area_button.mouse_on(mouse_pos):
                 screen.blit(rotated_spoon_images[current_topping], (mouse_pos[0], mouse_pos[1] - SPOON_HEIGHT * 3))
             else:
                 screen.blit(spoon_images[current_topping], mouse_pos)
         else:
             pygame.mouse.set_visible(True)
-            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
+            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
                     mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
@@ -221,6 +371,8 @@ def main():
             stage_queue()
         elif current_stage == "order":
             stage_order()
+        elif current_stage == "bread":
+            stage_bread()
         elif current_stage == "toppings":
             stage_toppings()
     pygame.quit()
