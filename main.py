@@ -1,3 +1,5 @@
+import time
+
 from settings import *
 from classes.Button import Button
 from helpers import *
@@ -38,7 +40,8 @@ def stage_queue():
 
         # Cursor management
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
-                (take_order_button.mouse_on(mouse_pos) and len(waiting_to_order_customers) > 0):  # Show the button only if any customer is at queue
+                (take_order_button.mouse_on(mouse_pos) and len(
+                    waiting_to_order_customers) > 0):  # Show the button only if any customer is at queue
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -170,11 +173,14 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                     if current_topping_num == toppings_count:
                         current_stage = "queue"
                         current_customer.change_image("queue")
-                        current_customer.set_position((TAKE_AWAY_QUEUE_X_LOCATION, TAKE_AWAY_QUEUE_Y_LOCATION + TAKE_AWAY_QUEUE_OFFSET * len(waiting_to_take_away_customers)))
+                        current_customer.set_position((TAKE_AWAY_QUEUE_X_LOCATION,
+                                                       TAKE_AWAY_QUEUE_Y_LOCATION + TAKE_AWAY_QUEUE_OFFSET * len(
+                                                           waiting_to_take_away_customers)))
                         waiting_to_take_away_customers.append(current_customer)
 
                         return None
-        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or on_text_box_button.mouse_on(mouse_pos):
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or on_text_box_button.mouse_on(
+                mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -207,8 +213,9 @@ def stage_bread():
         pygame.image.load("images/background_images/stage_bread_ready.jpg"),
         (WINDOW_WIDTH, WINDOW_HEIGHT))
 
-    background_image_dragging = pygame.transform.scale(pygame.image.load("images/background_images/stage_bread_drag.jpg"),
-                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+    background_image_dragging = pygame.transform.scale(
+        pygame.image.load("images/background_images/stage_bread_drag.jpg"),
+        (WINDOW_WIDTH, WINDOW_HEIGHT))
 
     is_held_before = False
     laffa_list = []  # laffa images list
@@ -245,7 +252,7 @@ def stage_bread():
 
                 if bread_on_screen:
                     if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530:
-                        current_stage = stage_toppings()  #TODO: MOVE TO STAGE COOKING AND TROUBLESHOOT
+                        current_stage = "cooking"  # TODO: MOVE TO STAGE COOKING AND TROUBLESHOOT
 
         if is_held_before:  # detect if the mouse was pressed on a laffa
             currently_dragging = True
@@ -289,14 +296,14 @@ def stage_bread():
                     laffa_3_case = False
                 is_held_before = False
 
-        if not bread_on_screen:  # blit new background
+        if not bread_on_screen:  # blit dragging background
             if currently_dragging:
                 screen.blit(background_image_dragging, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
             else:
-                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit existing background
         else:
-           screen.blit(background_image_breadready,
-                            (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit existing background
+            screen.blit(background_image_breadready,
+                        (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit new background
 
         if laffa_1_big_blit:  # blit big laffas
             screen.blit(laffa_1big, (640, 446))
@@ -305,11 +312,9 @@ def stage_bread():
         elif laffa_3_big_blit:
             screen.blit(laffa_3big, (640, 446))
 
-        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit small dragging laffas
+        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit screen buttons
         if len(laffa_list) >= 1:
-            screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))
-
-
+            screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))  # blit small dragging laffas
 
         # working hold mechanism for troubleshooting:
 
@@ -327,6 +332,258 @@ def stage_bread():
         # screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         # if len(laffa_list) >= 1:
         #     screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))
+
+        pygame.display.flip()
+
+
+def stage_cooking():
+    global current_stage
+    laffa_1_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"),
+                                           (508, 359))
+    laffa_2_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"),
+                                           (508, 359))
+    laffa_3_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"),
+                                           (508, 359))
+    laffa_1_p1 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"),
+                                           (508, 500))
+    laffa_1_p2 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"),
+                                        (508, 500))
+    laffa_1_p3 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"),
+                                        (508, 500))
+    laffa_2_p1 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"),
+                                        (508, 500))
+    laffa_2_p2 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"),
+                                        (508, 500))
+    laffa_2_p3 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"),
+                                        (508, 500))
+    laffa_3_p1 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"),
+                                        (508, 500))
+    laffa_3_p2 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"),
+                                        (508, 500))
+    laffa_3_p3 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"),
+                                        (508, 500))
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/background_cooking.png"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+    meat_1_image = pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"),
+                                          (400, 400))
+    meat_1big = pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"),
+                                       (450, 450))
+    meat_2big = pygame.transform.scale(pygame.image.load("images/meats/meat_2.png"),
+                                       (450, 450))
+    meat_3big = pygame.transform.scale(pygame.image.load("images/meats/meat_3.png"),
+                                       (450, 450))
+    meat_1_p1 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p1.png"),
+                                       (450, 450))
+    meat_1_p2 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p2.png"),
+                                       (450, 450))
+    meat_1_p3 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p3.png"),
+                                       (450, 450))
+    meat_2_p1 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p1.png"),
+                                       (450, 450))
+    meat_2_p2 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p2.png"),
+                                       (450, 450))
+    meat_2_p3 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p3.png"),
+                                       (450, 450))
+    meat_3_p1 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p1.png"),
+                                       (450, 450))
+    meat_3_p2 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p2.png"),
+                                       (450, 450))
+    meat_3_p3 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p3.png"),
+                                       (450, 450))
+    timer_border = pygame.transform.scale(pygame.image.load("images/other/timer_border.png"),
+                                          (200, 80))
+    meat_list = []
+    current_laffa = laffa_1_image  #TODO: make this global and accesible with the order class
+    is_held_before = False
+    meat_1_big_blit = False
+    meat_on_screen = False
+    clicked_on_cooked_meat = False
+    current_meat = meat_1big   #TODO: make this global and accesible with the order class
+    secs = 0
+    font = pygame.font.Font('freesansbold.ttf', 40)
+    text = font.render(str(secs), True, (0, 0, 0))
+    timing_text = font.render(("Cook meat between 10 and 20 seconds"), True, (0, 0, 0))
+    finished_text = font.render(("Click meat"), True, (0, 255, 0))
+    clock = pygame.time.Clock()
+    done = False
+    while current_stage == "cooking":
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)
+                for intent in screen_navigation_button_dictionary:
+                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                        if intent != current_stage:
+                            current_stage = intent
+                            return None
+                if 280 >= mouse_pos[0] >= 79 and 666 >= mouse_pos[1] >= 332:  # meat pos
+                    is_held_before = True
+                if 1080 >= mouse_pos[0] >= 892 and 589 >= mouse_pos[1] >= 294:
+                    clicked_on_cooked_meat = True
+
+        if is_held_before:  # detect if the mouse was pressed on meat
+            if pygame.mouse.get_pressed(3)[0]:  # detect if the mouse is being held
+                currently_dragging = True
+                pygame.mouse.set_visible(False)
+                if not (meat_1_image in meat_list):
+                    meat_list.append(meat_1_image)
+            else:
+                meat_list.remove(meat_1_image)
+                is_held_before = False
+                currently_dragging = False
+                pygame.mouse.set_visible(True)
+                hold_release_cords = mouse_pos
+                if 966 >= hold_release_cords[0] >= 844 and 430 >= hold_release_cords[1] >= 270:
+                    meat_on_screen = True
+                else:
+                    meat_on_screen = False
+
+        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+
+        if meat_on_screen:  # cook meat and display timer
+            if secs < 10:
+                text = font.render(str(secs), True, (0, 0, 0))
+                current_meat = meat_1big
+            elif 20 >= secs >= 10:
+                text = font.render(str(secs), True, (0, 255, 0))
+                current_meat = meat_2big
+                screen.blit(finished_text, (1370, 460))
+            elif secs > 20:
+                text = font.render(str(secs), True, (200, 0, 0))
+                current_meat = meat_3big
+                screen.blit(finished_text, (1370, 460))
+
+            if clicked_on_cooked_meat:  # animation of clicked meat
+                if current_meat == meat_1big:
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_1_p1, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_1_p2, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_1_p3, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1.3)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    for i in range(420):
+                        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                        screen.blit(current_laffa, (720, (1100-(2*i))))
+                        pygame.display.flip()
+                elif current_meat == meat_2big:
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_2_p1, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_2_p2, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_2_p3, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1.3)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    for i in range(420):
+                        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                        screen.blit(current_laffa, (720, (1100-(2*i))))
+                        pygame.display.flip()
+
+                elif current_meat == meat_3big:
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_3_p1, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_3_p2, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_3_p3, (766, 214))
+                    pygame.display.flip()
+
+                    time.sleep(1.3)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    for i in range(420):
+                        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                        screen.blit(current_laffa, (720, (1100-(2*i))))
+                        pygame.display.flip()
+
+                if current_laffa == laffa_1_image:
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_1_p1, (720, 200))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_1_p2, (720, 200))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_1_p3, (720, 200))
+                    pygame.display.flip()
+
+                elif current_laffa == laffa_2_image:
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_2_p1, (720, 200))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_2_p2, (720, 200))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_2_p3, (720, 200))
+                    pygame.display.flip()
+
+                elif current_laffa == laffa_3_image:
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_3_p1, (720, 200))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_3_p2, (720, 200))
+                    pygame.display.flip()
+
+                    time.sleep(1)
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(laffa_3_p3, (720, 200))
+                    pygame.display.flip()
+                time.sleep(1)
+                current_stage = "toppings"
+                break
+
+            screen.blit(timing_text, (1100, 400))
+            screen.blit(current_meat, (766, 214))
+            screen.blit(timer_border, (876, 74))
+            clock.tick(1)
+            secs += 1
+            screen.blit(text, (970, 96))
+            print(secs)
+
+        if len(meat_list) >= 1:
+            screen.blit(meat_list[0], (mouse_pos[0] - 100, mouse_pos[1] - 100))
 
         pygame.display.flip()
 
@@ -415,6 +672,8 @@ def main():
     global kosher
     # Setting up pygame window
 
+    current_stage = "cooking"
+
     # Game stages loop
     while current_stage != "exit":
         if current_stage == "start":
@@ -427,6 +686,8 @@ def main():
             stage_order()
         elif current_stage == "bread":
             stage_bread()
+        elif current_stage == "cooking":
+            stage_cooking()
         elif current_stage == "toppings":
             stage_toppings()
     pygame.quit()
