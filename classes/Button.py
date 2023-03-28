@@ -1,3 +1,6 @@
+import pygame
+
+
 class Button:
     """
     A class used to represent a Button on the screen
@@ -20,11 +23,6 @@ class Button:
         self.y_pos = y_pos
         self.width = width
         self.height = height
-
-    def mouse_on(self, mouse_pos):
-        if self.x_pos <= mouse_pos[0] < self.x_pos + self.width and self.y_pos <= mouse_pos[1] < self.y_pos + self.height:
-            return True
-        return False
 
     def clicked_on(self, mouse_pos):
         if self.x_pos <= mouse_pos[0] < self.x_pos + self.width and self.y_pos <= mouse_pos[1] < self.y_pos + self.height:

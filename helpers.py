@@ -9,8 +9,8 @@ import math
 
 
 def mouse_on_any_button(buttons_dict, mouse_pos):
-    for i in buttons_dict:
-        if buttons_dict[i].clicked_on(mouse_pos):
+    for button in buttons_dict.keys():
+        if buttons_dict[button].clicked_on(mouse_pos):
             return True
     return False
 
@@ -49,3 +49,28 @@ def get_random_order():
 
 def customer_steps_imitation(x_pos):
     return [x_pos, CUSTOMER_START_PATH_QUEUE[1] - abs(50 * math.sin(x_pos / 50))]
+
+
+def mouse_on():
+    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+
+
+def mouse_off():
+    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+
+def set_mouse_on(mouse_pos, dictionary1, dictionary2=None, dictionary3=None, dictionary4=None):
+    if dictionary2 is not None:
+        dictionary_library = [dictionary1, dictionary2]
+    elif dictionary3 is not None:
+        dictionary_library = [dictionary1, dictionary2, dictionary3]
+    elif dictionary4 is not None:
+        dictionary_library = [dictionary1, dictionary2, dictionary3, dictionary4]
+    else:
+        dictionary_library = [dictionary1]
+
+    for dictionary in dictionary_library:
+        if mouse_on_any_button(dictionary, mouse_pos):
+            mouse_on()
+            return
+    mouse_off()
