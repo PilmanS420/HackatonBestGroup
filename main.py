@@ -13,14 +13,10 @@ import math
 
 
 def stage_queue():
-    global current_stage, current_customer
+    global current_stage, current_customer, waiting_to_order_customers, waiting_to_take_away_customers, new_coming_customer, has_new_coming_customer
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
-    has_new_coming_customer = False  # A variable set to True when you want to create a new customer
-    new_coming_customer = get_random_customer()  # A customer coming to the first queue
-    waiting_to_order_customers = []  # List of customers are waiting for present their order
-    waiting_to_take_away_customers = []  # List of customers are waiting for take their shawarma
     while current_stage == "queue":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -30,7 +26,6 @@ def stage_queue():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 if len(waiting_to_order_customers) > 0 and take_order_button.mouse_on(mouse_pos):
-                    waiting_to_take_away_customers.append(waiting_to_order_customers[0])
                     current_customer = waiting_to_order_customers[0]
                     del waiting_to_order_customers[0]
                     current_stage = "order"
@@ -40,25 +35,41 @@ def stage_queue():
                         if intent != current_stage:
                             current_stage = intent
                             return None
+
+        # Cursor management
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
                 (take_order_button.mouse_on(mouse_pos) and len(waiting_to_order_customers) > 0):  # Show the button only if any customer is at queue
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+        # Gives new customer when has a command to that (has_new_coming_customer is True)
         if has_new_coming_customer:
             new_coming_customer = get_random_customer()
+            has_new_coming_customer = False
+
+        # Showing scene
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        if new_coming_customer is not None and new_coming_customer.get_position()[0] > CUSTOMER_END_PATH_QUEUE[0]:
+
+        # Showing customers at the back that are waiting to take their shawarma
+        for i in waiting_to_take_away_customers:
+            i.show()
+
+        # Showing animation of new coming customer
+        if new_coming_customer is not None:
             new_coming_customer.set_position(customer_steps_imitation(new_coming_customer.get_position()[0]))
             new_coming_customer.update(CUSTOMER_SPEED)
             new_coming_customer.show()
-        else:
-            if new_coming_customer is not None:
+            if new_coming_customer.get_position()[0] <= CUSTOMER_END_PATH_QUEUE[0]:
+                new_coming_customer.set_position(CUSTOMER_END_PATH_QUEUE)
                 new_coming_customer.change_image("queue")
                 waiting_to_order_customers.append(new_coming_customer)
                 new_coming_customer = None
+        if len(waiting_to_order_customers) > 0:
             screen.blit(take_order_dialog_window, TAKE_ORDER_COORDINATES)
+
+        # Showing customers are waiting at nearest queue
         for i in waiting_to_order_customers:
             i.show()
         pygame.display.flip()
@@ -67,10 +78,6 @@ def stage_queue():
 def stage_kosher():
     global current_stage
     global kosher
-    """
-    stage settings
-    
-    """
     background = pygame.image.load("images/background_images/kosher_or_not_screen.png")
     background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
     while current_stage == "kosher":
@@ -98,10 +105,6 @@ def stage_kosher():
 
 def stage_start():
     global current_stage
-    """
-    stage settings
-
-    """
     background = pygame.image.load("images/background_images/main_menu_screen.png")
     background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
     while current_stage == "start":
@@ -125,8 +128,8 @@ def stage_start():
         pygame.display.flip()
 
 
-def stage_order():
-    global current_stage, current_customer
+def stage_order():  # TODO: make queue update to show customers at queue at different locations and not at one place
+    global current_stage, current_customer, waiting_to_take_away_customers
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -165,7 +168,11 @@ def stage_order():
                     else:
                         current_topping_num += 1
                     if current_topping_num == toppings_count:
-                        current_stage = "toppings"
+                        current_stage = "queue"
+                        current_customer.change_image("queue")
+                        current_customer.set_position((TAKE_AWAY_QUEUE_X_LOCATION, TAKE_AWAY_QUEUE_Y_LOCATION + TAKE_AWAY_QUEUE_OFFSET * len(waiting_to_take_away_customers)))
+                        waiting_to_take_away_customers.append(current_customer)
+
                         return None
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or on_text_box_button.mouse_on(mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -279,4 +286,8 @@ def main():
 if __name__ == '__main__':
     global current_stage
     global current_customer
+    global new_coming_customer
+    global waiting_to_order_customers
+    global waiting_to_take_away_customers
+    global has_new_coming_customer
     main()

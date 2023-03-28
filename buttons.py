@@ -4,7 +4,7 @@ from constants import *
 # Create buttons dictionary
 
 # Dictionary for buttons for moving from screen to screen:
-# Buttons for the screens at the bottom: TODO: replace the names of the indexes
+# Buttons for the screens at the bottom:
 screen_navigation_button_dictionary = {"queue": Button(*SCREEN_BUTTON_ORDER_LOCATION), "bread": Button(*SCREEN_BUTTON_BREAD_LOCATION), "cooking": Button(*SCREEN_BUTTON_COOKING_LOCATION), "toppings": Button(*SCREEN_BUTTON_TOPPING_LOCATION)}
 
 # Buttons for the title screen:

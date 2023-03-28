@@ -41,7 +41,7 @@ class Customer:
         else:
             self.current_image = random.choice(self.images[action])
 
-    def show_text_window(self, to_show, ingredient_num=0):  # TODO: add new images to present ingredients better
+    def show_text_window(self, to_show, ingredient_num=0):  # TODO: add new images to present ingredients better (Aviel)
         screen.blit(empty_text_box, TEXT_BOX_COORDINATES)
         if to_show == "meat":
             pass
