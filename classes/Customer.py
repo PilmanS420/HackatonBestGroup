@@ -1,21 +1,53 @@
-from random import randint
+from settings import *
 from classes.Order import Order
-from constants import *
+import random
+from surfaces import empty_text_box, laffas_images, topping_images
+
+
 class Customer:
-    def __init__(self): # TODO: add more stuff
-        self.ingredient_amount = randint(MIN_INGREDIENTS_REQUESTED, MAX_INGREDIENTS_REQUESTED)
-        if MIN_INGREDIENTS_REQUESTED < self.ingredient_amount < MAX_INGREDIENTS_REQUESTED:
-            self.ingredients = None # TODO: wait for ingredient class to be made so i can make customer request random ingredients
-        self.patience = None # might be used later, leaving a placeholder
-        self.cooking_timer = 60 # in seconds
-        self.order = Order(self.ingredients, self.meat_type)
+    def __init__(self, order, waiting_timer, criticism, images_dict, position):
+        self.order = order
+        self.waiting_timer = waiting_timer
+        self.criticism = criticism
+        self.images = images_dict
+        self.current_image = random.choice(self.images["queue"])
+        self.position = list(position)
 
     def get_cooking_timer(self):
-        return self.cooking_timer
-    def get_ingredient_amount(self):
-        return self.ingredient_amount
+        return self.waiting_timer
 
-    def get_ingredients(self):
-        return self.ingredients
+    def get_order(self):
+        return self.order
+
+    def get_criticism(self):
+        return self.criticism
+
+    def get_position(self):
+        return self.position
+
+    def set_position(self, position):
+        self.position = list(position)
+
+    def show(self):
+        screen.blit(self.current_image, self.position)
+
+    def update(self, move_by_x=0, move_by_y=0):
+        self.position[0] += float(move_by_x)
+        self.position[1] += float(move_by_y)
+
+    def change_image(self, action, reaction="normal"):
+        if action == "reaction":
+            self.current_image = random.choice(self.images[action][reaction])
+        else:
+            self.current_image = random.choice(self.images[action])
+
+    def show_text_window(self, to_show, ingredient_num=0):  # TODO: add new images to present ingredients better (Aviel)
+        screen.blit(empty_text_box, TEXT_BOX_COORDINATES)
+        if to_show == "meat":
+            pass
+        elif to_show == "laffa":
+            screen.blit(laffas_images[self.order.get_laffa()], TEXT_BOX_COORDINATES)
+        else:
+            screen.blit(topping_images[self.order.get_ingredient(ingredient_num)], TEXT_BOX_COORDINATES)
 
 

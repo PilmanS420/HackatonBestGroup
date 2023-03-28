@@ -1,6 +1,6 @@
+from settings import *
 from surfaces import topping_images
 from classes.Ingredient import Ingredient
-from helpers import *
 
 
 ACCELERATION = 2

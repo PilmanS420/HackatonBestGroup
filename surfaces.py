@@ -1,4 +1,7 @@
-from helpers import *
+from settings import *
+
+take_order_dialog_window = pygame.transform.scale(pygame.image.load("images/other/take_order_dialog_window.png"), TAKE_ORDER_SIZE)
+empty_text_box = pygame.transform.scale(pygame.image.load("images/other/text_box.png"), TEXT_BOX_SIZE)
 
 spoon_images = {
     "harif": pygame.transform.scale(pygame.image.load("images/spoons_with_ingredients/spoon_harif.png"), (SPOON_WIDTH, SPOON_HEIGHT)),
@@ -29,3 +32,79 @@ laffas_images = {
 }
 screen_buttons_image = pygame.transform.scale(pygame.image.load("images/background_images/screen_buttons.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
+
+# Customers
+bob_customer_images = {
+    "queue": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_hihihi.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_nice.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_choose.png"), CUSTOMER_QUEUE_SIZE)],
+    "order": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_choose.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_laught.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_nice.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_talks.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_hihihi.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_thinks.png"), CUSTOMER_ORDER_SIZE)],
+    "think": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_thinks.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/bob/bob_choose.png"), CUSTOMER_ORDER_SIZE)],
+    "reaction": {
+        "worst": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_angry.png"), CUSTOMER_ORDER_SIZE),
+                  pygame.transform.scale(pygame.image.load("images/customers/bob/bob_furious.png"), CUSTOMER_ORDER_SIZE)],
+        "bad": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_upset.png"), CUSTOMER_ORDER_SIZE)],
+        "normal": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_no.png"), CUSTOMER_ORDER_SIZE)],
+        "good": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_nice.png"), CUSTOMER_ORDER_SIZE),
+                 pygame.transform.scale(pygame.image.load("images/customers/bob/bob_hihihi.png"), CUSTOMER_ORDER_SIZE)],
+        "best": [pygame.transform.scale(pygame.image.load("images/customers/bob/bob_laught.png"), CUSTOMER_ORDER_SIZE)]
+    }
+}
+jack_customer_images = {
+    "queue": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_nice.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/jack/jack_trolling.png"), CUSTOMER_QUEUE_SIZE)],
+    "order": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_serious.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/jack/jack_trolling.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/jack/jack_nice.png"), CUSTOMER_ORDER_SIZE)],
+    "think": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_no.png"), CUSTOMER_ORDER_SIZE)],
+    "reaction": {
+        "worst": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_angry.png"), CUSTOMER_ORDER_SIZE)],
+        "bad": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_serious.png"), CUSTOMER_ORDER_SIZE)],
+        "normal": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_sad.png"), CUSTOMER_ORDER_SIZE),
+                   pygame.transform.scale(pygame.image.load("images/customers/jack/jack_no.png"), CUSTOMER_ORDER_SIZE)],
+        "good": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_nice.png"), CUSTOMER_ORDER_SIZE)],
+        "best": [pygame.transform.scale(pygame.image.load("images/customers/jack/jack_perfect.png"), CUSTOMER_ORDER_SIZE)]
+    }
+}
+lucy_customer_images = {
+    "queue": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_hihihi.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_cute.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_fool.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_choose.png"), CUSTOMER_QUEUE_SIZE)],
+    "order": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_choose.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_cute.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_fool.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_hihihi.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_talk.png"), CUSTOMER_ORDER_SIZE)],
+    "think": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_choose.png"), CUSTOMER_ORDER_SIZE)],
+    "reaction": {
+        "worst": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_angry.png"), CUSTOMER_ORDER_SIZE)],
+        "bad": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_serious.png"), CUSTOMER_ORDER_SIZE)],
+        "normal": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_what.png"), CUSTOMER_ORDER_SIZE)],
+        "good": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_fool.png"), CUSTOMER_ORDER_SIZE),
+                 pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_choose.png"), CUSTOMER_ORDER_SIZE)],
+        "best": [pygame.transform.scale(pygame.image.load("images/customers/lucy/lucy_cute.png"), CUSTOMER_ORDER_SIZE)]
+    }
+}
+trollface_customer_images = {
+    "queue": [pygame.transform.scale(pygame.image.load("images/customers/troll/trollface.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/troll/troll_fool.png"), CUSTOMER_QUEUE_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/troll/troll_not_trollface.png"), CUSTOMER_QUEUE_SIZE)],
+    "order": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_not_trollface.png"), CUSTOMER_ORDER_SIZE),
+              pygame.transform.scale(pygame.image.load("images/customers/troll/trollface.png"), CUSTOMER_ORDER_SIZE)],
+    "think": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_normal.png"), CUSTOMER_ORDER_SIZE)],
+    "reaction": {
+        "worst": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_very_sad.png"), CUSTOMER_ORDER_SIZE)],
+        "bad": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_sad.png"), CUSTOMER_ORDER_SIZE)],
+        "normal": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_normal.png"), CUSTOMER_ORDER_SIZE)],
+        "good": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_not_trollface.png"), CUSTOMER_ORDER_SIZE)],
+        "best": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_xd.png"), CUSTOMER_ORDER_SIZE)]
+    }
+}
+meat_images = {}  # TODO: add meat images

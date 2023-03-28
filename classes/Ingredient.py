@@ -1,5 +1,5 @@
+from settings import *
 from surfaces import topping_images
-from helpers import *
 
 
 class Ingredient:
