@@ -14,6 +14,10 @@ from classes.Customer import Customer
 import math
 
 
+def stage_settings():
+    pygame.quit()
+
+
 def stage_queue():
     global current_stage, current_customer, waiting_to_order_customers, waiting_to_take_away_customers, new_coming_customer, has_new_coming_customer
 
@@ -27,16 +31,15 @@ def stage_queue():
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
-                if len(waiting_to_order_customers) > 0 and take_order_button.mouse_on(mouse_pos):
+                if len(waiting_to_order_customers) > 0 and take_order_button["take order"].clicked_on(mouse_pos):
                     current_customer = waiting_to_order_customers[0]
                     del waiting_to_order_customers[0]
                     current_stage = "order"
                     return None
-                for intent in screen_navigation_button_dictionary:
-                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
-                        if intent != current_stage:
-                            current_stage = intent
-                            return None
+                for button in screen_navigation_button_dictionary.keys():
+                    if screen_navigation_button_dictionary[button].clicked_on(mouse_pos) and button != current_stage:
+                        current_stage = button
+                        return None
 
         # Cursor management
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
@@ -50,6 +53,12 @@ def stage_queue():
         if has_new_coming_customer:
             new_coming_customer = get_random_customer()
             has_new_coming_customer = False
+
+        # Cursor management
+        if waiting_to_order_customers:
+            set_mouse_on(mouse_pos, screen_navigation_button_dictionary, take_order_button)
+        else:
+            set_mouse_on(mouse_pos, screen_navigation_button_dictionary)
 
         # Showing scene
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
@@ -89,10 +98,7 @@ def stage_kosher():
                 current_stage = "exit"
                 return None
             mouse_pos = pygame.mouse.get_pos()
-            found_mouse_on = False
-            for button in kosher_button_dictionary.values():
-                if not found_mouse_on:
-                    found_mouse_on = button.mouse_on(mouse_pos)
+            set_mouse_on(mouse_pos, kosher_button_dictionary)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if kosher_button_dictionary["kosher"].clicked_on(mouse_pos):
                     kosher = True
@@ -117,10 +123,7 @@ def stage_start():
                 current_stage = "exit"
                 return None
             mouse_pos = pygame.mouse.get_pos()
-            found_mouse_on = False
-            for button in menu_button_dictionary.values():
-                if not found_mouse_on:
-                    found_mouse_on = button.mouse_on(mouse_pos)
+            set_mouse_on(mouse_pos, menu_button_dictionary)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_button_dictionary["start"].clicked_on(mouse_pos):
                     current_stage = "kosher"
@@ -155,11 +158,11 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 for intent in screen_navigation_button_dictionary:
-                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                    if screen_navigation_button_dictionary[intent].clicked_on(mouse_pos):
                         if intent != current_stage:
                             current_stage = intent
                             return None
-                if on_text_box_button.mouse_on(mouse_pos):
+                if on_text_box_button.clicked_on(mouse_pos):
                     current_customer.change_image("order")
                     if showing_ingredient_type == "laffa":
                         if current_customer.get_order().has_meat():
@@ -181,6 +184,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         return None
         if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or on_text_box_button.mouse_on(
                 mouse_pos):
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or on_text_box_button.clicked_on(mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -606,7 +610,7 @@ def stage_toppings():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)  # TODO: delete this print
                 for topping in toppings_stage_button_dictionary:  # A cycle checking if one of toppings has taken
-                    if toppings_stage_button_dictionary[topping].mouse_on(mouse_pos):
+                    if toppings_stage_button_dictionary[topping].clicked_on(mouse_pos):
                         if topping == current_topping:
                             current_topping = "None"
                             spoon_cursor = False
@@ -614,11 +618,11 @@ def stage_toppings():
                             current_topping = topping
                             spoon_cursor = True
                 for intent in screen_navigation_button_dictionary:
-                    if screen_navigation_button_dictionary[intent].mouse_on(mouse_pos):
+                    if screen_navigation_button_dictionary[intent].clicked_on(mouse_pos):
                         if intent != current_stage:
                             current_stage = intent
                             return None
-                if toppings_falling_area_button.mouse_on(mouse_pos) and spoon_cursor:
+                if toppings_falling_area_button.clicked_on(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
                                                                  mouse_pos[
                                                                      1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET,
@@ -651,6 +655,7 @@ def stage_toppings():
         # Custom cursor bliting and default cursor changing
         if spoon_cursor:
             pygame.mouse.set_visible(False)
+            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or toppings_falling_area_button.clicked_on(mouse_pos):
             if mouse_on_any_button(toppings_stage_button_dictionary,
                                    mouse_pos) or toppings_falling_area_button.mouse_on(mouse_pos):
                 screen.blit(rotated_spoon_images[current_topping], (mouse_pos[0], mouse_pos[1] - SPOON_HEIGHT * 3))
@@ -690,6 +695,8 @@ def main():
             stage_cooking()
         elif current_stage == "toppings":
             stage_toppings()
+        elif current_stage == "settings":
+            stage_settings()
     pygame.quit()
 
 
