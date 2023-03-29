@@ -40,7 +40,7 @@ toppings_stage_button_dictionary = {
 checkmark_button = Button(CHECKMARK_POSITION[0], CHECKMARK_POSITION[1], CHECKMARK_SIZE[0], CHECKMARK_SIZE[1])
 
 # Variable keeps area for toppings station, where you can throw ingredients on lafa
-toppings_falling_area_button = Button(LAFFA_X_POS, LAFFA_Y_POS - TOPPINGS_ABOVE_LAFFA_OFFSET, SHAWARMA_MEDIUM_SIZE[0], SHAWARMA_MEDIUM_SIZE[1])
+toppings_falling_area_button = Button(LAFFA_X_POS, LAFFA_Y_POS - TOPPINGS_ABOVE_LAFFA_OFFSET, SHAWARMA_SPEECH_BOX_SIZE[0], SHAWARMA_SPEECH_BOX_SIZE[1])
 
 # Order stage
 on_text_box_button = {"text box": Button(TEXT_BOX_COORDINATES[0], TEXT_BOX_COORDINATES[1], TEXT_BOX_SIZE[0], TEXT_BOX_SIZE[1])}

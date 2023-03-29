@@ -1,7 +1,7 @@
 from settings import *
 from classes.Order import Order
 import random
-from surfaces import empty_text_box, laffas_medium_images, topping_images
+from surfaces import empty_text_box, laffas_speech_box_images, topping_speech_box_images
 
 
 class Customer:
@@ -46,8 +46,9 @@ class Customer:
         if to_show == "meat":
             pass
         elif to_show == "laffa":
-            screen.blit(laffas_medium_images[self.order.get_laffa()], TEXT_BOX_COORDINATES)
+            screen.blit(laffas_speech_box_images[self.order.get_laffa()], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
         else:
-            screen.blit(topping_images[self.order.get_ingredient(ingredient_num)], TEXT_BOX_COORDINATES)
+            screen.blit(topping_speech_box_images[self.order.get_ingredient(ingredient_num)], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
 
 
+8
