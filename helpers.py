@@ -74,3 +74,9 @@ def set_mouse_on(mouse_pos, dictionary1, dictionary2=None, dictionary3=None, dic
             mouse_on()
             return
     mouse_off()
+
+
+def settings_screen():
+    in_settings_screen = True
+    while in_settings_screen:
+        in_settings_screen = False
