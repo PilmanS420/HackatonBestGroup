@@ -10,7 +10,7 @@ import math
 
 def mouse_on_any_button(buttons_dict, mouse_pos):
     for button in buttons_dict.keys():
-        if buttons_dict[button].clicked_on(mouse_pos):
+        if buttons_dict[button].mouse_on_button(mouse_pos):
             return True
     return False
 
