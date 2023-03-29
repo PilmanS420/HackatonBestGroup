@@ -223,9 +223,6 @@ def stage_bread():
     laffa_1_case = False
     laffa_2_case = False
     laffa_3_case = False
-    laffa_1_big_blit = False
-    laffa_2_big_blit = False
-    laffa_3_big_blit = False
     bread_on_screen = False
     currently_dragging = False
     while current_stage == "bread":
@@ -241,6 +238,7 @@ def stage_bread():
                         if intent != current_stage:
                             current_stage = intent
                             return None
+                # TODO: change positions checking to Buttons checking
                 if 296 >= mouse_pos[0] >= 165 and 339 >= mouse_pos[1] >= 205:  # laffa 1 pos
                     is_held_before = True
                     laffa_1_case = True
@@ -252,9 +250,16 @@ def stage_bread():
                     laffa_3_case = True
 
                 if bread_on_screen:
-                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530:
+                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530:  # TODO: change to button
+                        shawarmas_at_stages["cooking"] = shawarmas_at_stages[current_stage]
+                        shawarmas_at_stages[current_stage] = None
                         current_stage = "cooking"  # TODO: MOVE TO STAGE COOKING AND TROUBLESHOOT
-
+                        return None
+        # Cursor management
+        if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos):  # TODO: add shawarma buttons
+            mouse_on()
+        else:
+            mouse_off()
         if is_held_before:  # detect if the mouse was pressed on a laffa
             currently_dragging = True
             pygame.mouse.set_visible(False)
@@ -272,19 +277,17 @@ def stage_bread():
                 currently_dragging = False
                 pygame.mouse.set_visible(True)
                 hold_release_cords = mouse_pos
-                if 726 >= hold_release_cords[1] >= 466 and 1309 >= hold_release_cords[0] >= 721:
+                if 726 >= hold_release_cords[1] >= 466 and 1309 >= hold_release_cords[0] >= 721:  # TODO: change to button
                     bread_on_screen = True
                     if laffa_1_case:
-                        laffa_1_big_blit = True
+                        shawarmas_at_stages[current_stage] = Order("Type 1", False)
                     elif laffa_2_case:
-                        laffa_2_big_blit = True
+                        shawarmas_at_stages[current_stage] = Order("Type 2", False)
                     elif laffa_3_case:
-                        laffa_3_big_blit = True
+                        shawarmas_at_stages[current_stage] = Order("Type 3", False)
                 else:
                     bread_on_screen = False
-                    laffa_3_big_blit = False
-                    laffa_2_big_blit = False
-                    laffa_1_big_blit = False
+                    shawarmas_at_stages[current_stage] = None
 
                 if laffa_1_case:
                     laffa_list.remove(laffa_1_image)
@@ -306,16 +309,12 @@ def stage_bread():
             screen.blit(background_image_breadready,
                         (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit new background
 
-        if laffa_1_big_blit:  # blit big laffas
-            screen.blit(laffa_1big, (640, 446))
-        elif laffa_2_big_blit:
-            screen.blit(laffa_2big, (640, 446))
-        elif laffa_3_big_blit:
-            screen.blit(laffa_3big, (640, 446))
+        if shawarmas_at_stages[current_stage] is not None:
+            shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_BREAD_STAGE_POSITION)
 
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit screen buttons
         if len(laffa_list) >= 1:
-            screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))  # blit small dragging laffas
+            screen.blit(laffa_list[0], mouse_pos)  # blit small dragging laffas
 
         # working hold mechanism for troubleshooting:
 
@@ -339,67 +338,15 @@ def stage_bread():
 
 def stage_cooking():
     global current_stage
-    laffa_1_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"),
-                                           (508, 359))
-    laffa_2_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"),
-                                           (508, 359))
-    laffa_3_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"),
-                                           (508, 359))
-    laffa_1_p1 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"),
-                                           (508, 500))
-    laffa_1_p2 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"),
-                                        (508, 500))
-    laffa_1_p3 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"),
-                                        (508, 500))
-    laffa_2_p1 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"),
-                                        (508, 500))
-    laffa_2_p2 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"),
-                                        (508, 500))
-    laffa_2_p3 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"),
-                                        (508, 500))
-    laffa_3_p1 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"),
-                                        (508, 500))
-    laffa_3_p2 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"),
-                                        (508, 500))
-    laffa_3_p3 = pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"),
-                                        (508, 500))
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background_cooking.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
-    meat_1_image = pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"),
-                                          (400, 400))
-    meat_1big = pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"),
-                                       (450, 450))
-    meat_2big = pygame.transform.scale(pygame.image.load("images/meats/meat_2.png"),
-                                       (450, 450))
-    meat_3big = pygame.transform.scale(pygame.image.load("images/meats/meat_3.png"),
-                                       (450, 450))
-    meat_1_p1 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p1.png"),
-                                       (450, 450))
-    meat_1_p2 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p2.png"),
-                                       (450, 450))
-    meat_1_p3 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p3.png"),
-                                       (450, 450))
-    meat_2_p1 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p1.png"),
-                                       (450, 450))
-    meat_2_p2 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p2.png"),
-                                       (450, 450))
-    meat_2_p3 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p3.png"),
-                                       (450, 450))
-    meat_3_p1 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p1.png"),
-                                       (450, 450))
-    meat_3_p2 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p2.png"),
-                                       (450, 450))
-    meat_3_p3 = pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p3.png"),
-                                       (450, 450))
-    timer_border = pygame.transform.scale(pygame.image.load("images/other/timer_border.png"),
-                                          (200, 80))
     meat_list = []
-    current_laffa = laffa_1_image  #TODO: make this global and accesible with the order class
+    current_laffa = laffas_images["Type 1"]  #TODO: make this global and accesible with the order class
     is_held_before = False
     meat_1_big_blit = False
     meat_on_screen = False
     clicked_on_cooked_meat = False
-    current_meat = meat_1big   #TODO: make this global and accesible with the order class
+    current_meat = meat_images["raw"][0]   #TODO: make this global and accesible with the order class
     secs = 0
     font = pygame.font.Font('freesansbold.ttf', 40)
     text = font.render(str(secs), True, (0, 0, 0))
@@ -420,7 +367,7 @@ def stage_cooking():
                         if intent != current_stage:
                             current_stage = intent
                             return None
-                if 280 >= mouse_pos[0] >= 79 and 666 >= mouse_pos[1] >= 332:  # meat pos
+                if 280 >= mouse_pos[0] >= 79 and 666 >= mouse_pos[1] >= 332:  # meat pos  # TODO: change to button
                     is_held_before = True
                 if 1080 >= mouse_pos[0] >= 892 and 589 >= mouse_pos[1] >= 294:
                     clicked_on_cooked_meat = True
@@ -437,7 +384,7 @@ def stage_cooking():
                 currently_dragging = False
                 pygame.mouse.set_visible(True)
                 hold_release_cords = mouse_pos
-                if 966 >= hold_release_cords[0] >= 844 and 430 >= hold_release_cords[1] >= 270:
+                if 966 >= hold_release_cords[0] >= 844 and 430 >= hold_release_cords[1] >= 270 and shawarmas_at_stages[current_stage] is not None:
                     meat_on_screen = True
                 else:
                     meat_on_screen = False
@@ -448,132 +395,103 @@ def stage_cooking():
         if meat_on_screen:  # cook meat and display timer
             if secs < 10:
                 text = font.render(str(secs), True, (0, 0, 0))
-                current_meat = meat_1big
+                current_meat = meat_images["raw"][0]
             elif 20 >= secs >= 10:
                 text = font.render(str(secs), True, (0, 255, 0))
-                current_meat = meat_2big
+                current_meat = meat_images["medium"][0]
                 screen.blit(finished_text, (1370, 460))
             elif secs > 20:
                 text = font.render(str(secs), True, (200, 0, 0))
-                current_meat = meat_3big
+                current_meat = meat_images["well done"][0]
                 screen.blit(finished_text, (1370, 460))
 
             if clicked_on_cooked_meat:  # animation of clicked meat
-                if current_meat == meat_1big:
+                if current_meat == meat_images["raw"][0]:
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_1_p1, (766, 214))
+                    screen.blit(meat_images["raw"][1], (766, 214))
                     pygame.display.flip()
 
                     time.sleep(1)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_1_p2, (766, 214))
+                    screen.blit(meat_images["raw"][2], (766, 214))
                     pygame.display.flip()
 
                     time.sleep(1)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_1_p3, (766, 214))
+                    screen.blit(meat_images["raw"][3], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1.3)
+                    # time.sleep(1.3)
+                    # for i in range(420):
+                    #     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    #     shawarmas_at_stages[current_stage].show_like_shawarma((720, (1100-(2*i))))
+                    #     pygame.display.flip()
+                elif current_meat == meat_images["medium"][0]:
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    for i in range(420):
-                        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                        screen.blit(current_laffa, (720, (1100-(2*i))))
-                        pygame.display.flip()
-                elif current_meat == meat_2big:
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_2_p1, (766, 214))
-                    pygame.display.flip()
-
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_2_p2, (766, 214))
+                    screen.blit(meat_images["medium"][1], (766, 214))
                     pygame.display.flip()
 
                     time.sleep(1)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_2_p3, (766, 214))
-                    pygame.display.flip()
-
-                    time.sleep(1.3)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    for i in range(420):
-                        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                        screen.blit(current_laffa, (720, (1100-(2*i))))
-                        pygame.display.flip()
-
-                elif current_meat == meat_3big:
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_3_p1, (766, 214))
+                    screen.blit(meat_images["medium"][2], (766, 214))
                     pygame.display.flip()
 
                     time.sleep(1)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_3_p2, (766, 214))
+                    screen.blit(meat_images["medium"][3], (766, 214))
+                    pygame.display.flip()
+
+                    # time.sleep(1)
+                    # for i in range(420):
+                    #     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    #     shawarmas_at_stages[current_stage].show_like_shawarma((720, (1100-(2*i))))
+                    #     pygame.display.flip()
+
+                elif current_meat == meat_images["well done"][0]:
+                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    screen.blit(meat_images["well done"][1], (766, 214))
                     pygame.display.flip()
 
                     time.sleep(1)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(meat_3_p3, (766, 214))
-                    pygame.display.flip()
-
-                    time.sleep(1.3)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    for i in range(420):
-                        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                        screen.blit(current_laffa, (720, (1100-(2*i))))
-                        pygame.display.flip()
-
-                if current_laffa == laffa_1_image:
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_1_p1, (720, 200))
+                    screen.blit(meat_images["well done"][2], (766, 214))
                     pygame.display.flip()
 
                     time.sleep(1)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_1_p2, (720, 200))
+                    screen.blit(meat_images["well done"][3], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_1_p3, (720, 200))
-                    pygame.display.flip()
+                    # time.sleep(1.3)
+                    # for i in range(420):
+                    #     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                    #     shawarmas_at_stages[current_stage].show_like_shawarma(720, (1100-(2*i)))
+                    #     pygame.display.flip()
 
-                elif current_laffa == laffa_2_image:
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_2_p1, (720, 200))
-                    pygame.display.flip()
+                time.sleep(0.5)
+                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                shawarmas_at_stages[current_stage].add_meat()
+                shawarmas_at_stages[current_stage].show_like_shawarma((720, 200))
+                pygame.display.flip()
 
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_2_p2, (720, 200))
-                    pygame.display.flip()
-
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_2_p3, (720, 200))
-                    pygame.display.flip()
-
-                elif current_laffa == laffa_3_image:
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_3_p1, (720, 200))
-                    pygame.display.flip()
-
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_3_p2, (720, 200))
-                    pygame.display.flip()
-
-                    time.sleep(1)
-                    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    screen.blit(laffa_3_p3, (720, 200))
-                    pygame.display.flip()
                 time.sleep(1)
+                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                shawarmas_at_stages[current_stage].add_meat()
+                shawarmas_at_stages[current_stage].show_like_shawarma((720, 200))
+                pygame.display.flip()
+
+                time.sleep(1)
+                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                shawarmas_at_stages[current_stage].add_meat()
+                shawarmas_at_stages[current_stage].show_like_shawarma((720, 200))
+                pygame.display.flip()
+
+                time.sleep(1)
+                shawarmas_at_stages["toppings"] = shawarmas_at_stages[current_stage]
+                shawarmas_at_stages[current_stage] = None
                 current_stage = "toppings"
-                break
+                pygame.display.flip()
+                return None
 
             screen.blit(timing_text, (1100, 400))
             screen.blit(current_meat, (766, 214))
@@ -597,7 +515,6 @@ def stage_toppings():
     current_topping = "None"
     spoon_cursor = False  # Variable presenting if user holds a spoon and don't need a default cursor
     falling_ingredients = []
-    shawarma = Order("Laffa 1")
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -605,7 +522,6 @@ def stage_toppings():
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse_pos)  # TODO: delete this print
                 for topping in toppings_stage_button_dictionary:  # A cycle checking if one of toppings has taken
                     if toppings_stage_button_dictionary[topping].mouse_on_button(mouse_pos):
                         if topping == current_topping:
@@ -619,10 +535,13 @@ def stage_toppings():
                         if intent != current_stage:
                             current_stage = intent
                             return None
-                if toppings_falling_area_button.mouse_on_button(mouse_pos) and spoon_cursor:
+                if shawarmas_at_stages[current_stage] is not None and\
+                        toppings_falling_area_button.mouse_on_button(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
                                                                  mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
                 if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and current_customer is not None:
+                    shawarmas_at_stages["take order"] = shawarmas_at_stages[current_stage]
+                    shawarmas_at_stages[current_stage] = None
                     current_stage = "take order"
                     current_customer.change_image("think")
                     current_customer.set_position(CUSTOMER_POSITION_ORDER)
@@ -632,13 +551,14 @@ def stage_toppings():
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         if current_customer is not None:
             screen.blit(checkmark_image, CHECKMARK_POSITION)
-        screen.blit(laffas_images["Type 1"], (LAFFA_X_POS, LAFFA_Y_POS))
+        if shawarmas_at_stages[current_stage] is not None:
+            shawarmas_at_stages[current_stage].show_like_shawarma((LAFFA_X_POS, LAFFA_Y_POS))
 
         # Falling toppings updating and bliting
         indexes_to_delete = []
         for i in range(len(falling_ingredients)):
             if falling_ingredients[i].is_landed(LAFFA_Y_POS):
-                shawarma.add_topping(falling_ingredients[i])
+                shawarmas_at_stages[current_stage].add_topping(falling_ingredients[i])
                 indexes_to_delete.append(i)
             falling_ingredients[i].update(LAFFA_Y_POS)
             falling_ingredients[i].show(LAFFA_X_POS, falling_ingredients[i].real_y_pos)
@@ -657,7 +577,9 @@ def stage_toppings():
         # Custom cursor bliting and default cursor changing
         if spoon_cursor:
             pygame.mouse.set_visible(False)
-            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or toppings_falling_area_button.mouse_on_button(mouse_pos):
+            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or\
+                    toppings_falling_area_button.mouse_on_button(mouse_pos) and\
+                    shawarmas_at_stages[current_stage] is not None:
                 screen.blit(rotated_spoon_images[current_topping], (mouse_pos[0], mouse_pos[1] - SPOON_HEIGHT * 3))
             else:
                 screen.blit(spoon_images[current_topping], mouse_pos)

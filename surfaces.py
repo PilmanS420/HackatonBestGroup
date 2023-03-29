@@ -30,8 +30,43 @@ laffas_images = {
     "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
     "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
 }
+
+laffas_with_meat = {
+    "Type 1": [
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), (LAFFA_WIDTH, LAFFA_HEIGHT))],
+    "Type 2": [
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), (LAFFA_WIDTH, LAFFA_HEIGHT))],
+    "Type 3": [
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), (LAFFA_WIDTH, LAFFA_HEIGHT)),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), (LAFFA_WIDTH, LAFFA_HEIGHT))]}
+
+meat_1_image = pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"),
+                                          PRESENTING_MEAT_SIZE)
+meat_images = {
+    "raw": [
+        pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p1.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p2.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_1_p3.png"), (450, 450))],
+    "medium": [
+        pygame.transform.scale(pygame.image.load("images/meats/meat_2.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p1.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p2.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_2_p3.png"),(450, 450))],
+    "well done": [
+        pygame.transform.scale(pygame.image.load("images/meats/meat_3.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p1.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p2.png"), (450, 450)),
+        pygame.transform.scale(pygame.image.load("images/meats/shwarma_3_p3.png"), (450, 450))]}
+
 screen_buttons_image = pygame.transform.scale(pygame.image.load("images/background_images/screen_buttons.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
+timer_border = pygame.image.load("images/other/timer_border.png")
 
 # Customers
 bob_customer_images = {
@@ -107,6 +142,5 @@ trollface_customer_images = {
         "best": [pygame.transform.scale(pygame.image.load("images/customers/troll/troll_xd.png"), CUSTOMER_ORDER_SIZE)]
     }
 }
-meat_images = {}  # TODO: add meat images
 
 checkmark_image = pygame.transform.scale(pygame.image.load("images/other/checkmark.png"), CHECKMARK_SIZE)

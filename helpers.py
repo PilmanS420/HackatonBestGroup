@@ -34,9 +34,9 @@ def get_random_order():
     laffa = random.choice(LAFFAS_LIST)
     has_meat = random.randint(1, 5)
     if has_meat >= 4:
-        meat = True
+        meat = 3
     else:
-        meat = False
+        meat = 0
     toppings_count = random.randint(MIN_INGREDIENTS_REQUESTED, MAX_INGREDIENTS_REQUESTED)
     potential_ingredients = list(INGREDIENTS_LIST)
     final_ingredients = []

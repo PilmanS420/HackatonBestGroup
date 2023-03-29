@@ -8,5 +8,6 @@ class Ingredient:
         self.on_laffa_x_pos = on_laffa_x_pos
         self.on_laffa_y_pos = on_laffa_y_pos
 
-    def show(self, laffa_x_pos, laffa_y_pos):
-        screen.blit(topping_images[self.name], (laffa_x_pos + self.on_laffa_x_pos, laffa_y_pos + self.on_laffa_y_pos))
+    def show(self, shawarma_position):
+        screen.blit(topping_images[self.name], (shawarma_position[0] + self.on_laffa_x_pos,
+                                                shawarma_position[1] + self.on_laffa_y_pos))

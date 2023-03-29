@@ -13,3 +13,4 @@ new_coming_customer = None
 waiting_to_order_customers = []
 waiting_to_take_away_customers = []
 has_new_coming_customer = True
+shawarmas_at_stages = {"bread": None, "cooking": None, "toppings": None, "take order": None}
