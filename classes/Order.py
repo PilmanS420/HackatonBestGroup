@@ -18,13 +18,19 @@ class Order:
     def show_like_order(self):
         pass
 
-    def show_like_shawarma(self, shawarma_position):
+    def show_like_shawarma(self, shawarma_position, size="medium"):
         if self.meat_count == 0:
-            screen.blit(laffas_images[self.laffa], shawarma_position)
+            if size == "small":
+                screen.blit(laffas_medium_images[self.laffa], shawarma_position)
+            else:
+                screen.blit(laffas_small_images[self.laffa], shawarma_position)
         else:
-            screen.blit(laffas_with_meat[self.laffa][self.meat_count - 1], shawarma_position)
+            if size == "small":
+                screen.blit(laffas_with_meat_small_images[self.laffa][self.meat_count - 1], shawarma_position)
+            else:
+                screen.blit(laffas_with_meat_medium_images[self.laffa][self.meat_count - 1], shawarma_position)
         for topping in self.toppings:
-            topping.show(shawarma_position)
+            topping.show(shawarma_position, size)
 
     def get_ingredient(self, number):
         return self.toppings[number]

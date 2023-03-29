@@ -310,7 +310,7 @@ def stage_bread():
                         (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit new background
 
         if shawarmas_at_stages[current_stage] is not None:
-            shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_BREAD_STAGE_POSITION)
+            shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_BREAD_STAGE_POSITION, "medium")
 
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit screen buttons
         if len(laffa_list) >= 1:
@@ -336,17 +336,15 @@ def stage_bread():
         pygame.display.flip()
 
 
-def stage_cooking():
+def stage_cooking():  # TODO: Find a way to present animation without lags
     global current_stage
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background_cooking.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     meat_list = []
-    current_laffa = laffas_images["Type 1"]  #TODO: make this global and accesible with the order class
     is_held_before = False
-    meat_1_big_blit = False
     meat_on_screen = False
     clicked_on_cooked_meat = False
-    current_meat = meat_images["raw"][0]   #TODO: make this global and accesible with the order class
+    current_meat = meat_images["raw"][0]
     secs = 0
     font = pygame.font.Font('freesansbold.ttf', 40)
     text = font.render(str(secs), True, (0, 0, 0))
@@ -539,7 +537,7 @@ def stage_toppings():
                         toppings_falling_area_button.mouse_on_button(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
                                                                  mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
-                if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and current_customer is not None:
+                if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and current_customer is not None and shawarmas_at_stages[current_stage] is not None:
                     shawarmas_at_stages["take order"] = shawarmas_at_stages[current_stage]
                     shawarmas_at_stages[current_stage] = None
                     current_stage = "take order"
@@ -549,7 +547,7 @@ def stage_toppings():
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        if current_customer is not None:
+        if current_customer is not None and shawarmas_at_stages[current_stage] is not None:
             screen.blit(checkmark_image, CHECKMARK_POSITION)
         if shawarmas_at_stages[current_stage] is not None:
             shawarmas_at_stages[current_stage].show_like_shawarma((LAFFA_X_POS, LAFFA_Y_POS))
@@ -607,7 +605,6 @@ def stage_take_order():
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse_pos)  # TODO: delete this print
                 if my_timer < 0 and checkmark_button.mouse_on_button(mouse_pos):
                     del waiting_to_take_away_customers[0]
                     current_customer = None
@@ -618,6 +615,7 @@ def stage_take_order():
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_TAKE_ORDER_STAGE_POSITION, "small")
         if my_timer > 0:
             my_timer -= 1
         elif my_timer == 0:
@@ -633,9 +631,6 @@ def stage_take_order():
 def main():
     global current_stage
     global kosher
-    # Setting up pygame window
-
-    current_stage = "cooking"
 
     # Game stages loop
     while current_stage != "exit":
