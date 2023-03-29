@@ -279,7 +279,8 @@ def stage_bread():
                     laffa_3_case = True
 
                 if bread_on_screen:
-                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530:  # TODO: change to button
+                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530 and\
+                            shawarmas_at_stages["toppings"] is None:  # TODO: change to button
                         shawarmas_at_stages["cooking"] = shawarmas_at_stages[current_stage]
                         shawarmas_at_stages[current_stage] = None
                         current_stage = "cooking"  # TODO: MOVE TO STAGE COOKING AND TROUBLESHOOT
@@ -400,8 +401,8 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
                 if come_new_customer(time_counter):
                     waiting_to_order_customers.append(get_random_customer())
                     waiting_to_order_customers[-1].set_position(
-                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1)),
-                        CUSTOMER_END_PATH_QUEUE[1])
+                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
+                         CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 for intent in screen_navigation_button_dictionary:
@@ -571,7 +572,7 @@ def stage_toppings():
                     return None
                 if come_new_customer(time_counter):
                     waiting_to_order_customers.append(get_random_customer())
-                    waiting_to_order_customers[-1].set_position((CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1)), CUSTOMER_END_PATH_QUEUE[1])
+                    waiting_to_order_customers[-1].set_position((CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1), CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for topping in toppings_stage_button_dictionary:  # A cycle checking if one of toppings has taken
                     if toppings_stage_button_dictionary[topping].mouse_on_button(mouse_pos):
