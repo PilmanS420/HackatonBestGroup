@@ -156,7 +156,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
-                if on_text_box_button.mouse_on_button(mouse_pos):
+                if on_text_box_button["text box"].mouse_on_button(mouse_pos):
                     current_customer.change_image("order")
                     if showing_ingredient_type == "laffa":
                         if current_customer.get_order().has_meat():
@@ -176,10 +176,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         waiting_to_take_away_customers.append(current_customer)
 
                         return None
-        if on_text_box_button.mouse_on_button(mouse_pos):
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-        else:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        set_mouse_on(mouse_pos, on_text_box_button)
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         current_customer.show()
