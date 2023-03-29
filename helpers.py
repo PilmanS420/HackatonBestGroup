@@ -5,6 +5,7 @@ from surfaces import *
 import random
 from classes.Order import Order
 from classes.Customer import Customer
+from classes.Ingredient import Ingredient
 import math
 
 
@@ -42,7 +43,7 @@ def get_random_order():
     final_ingredients = []
     for i in range(toppings_count):
         topping_num = random.randint(0, len(potential_ingredients) - 1)
-        final_ingredients.append(potential_ingredients[topping_num])
+        final_ingredients.append(Ingredient(potential_ingredients[topping_num], 0, 0))
         del potential_ingredients[topping_num]
     return Order(laffa, meat, final_ingredients)
 
@@ -74,3 +75,12 @@ def set_mouse_on(mouse_pos, dictionary1, dictionary2=None, dictionary3=None, dic
             mouse_on()
             return
     mouse_off()
+
+
+def come_new_customer(timer_counter):
+    return timer_counter % NEW_CUSTOMERS_COOLDOWN == 0 and len(waiting_to_take_away_customers) + len(waiting_to_order_customers) < 5
+
+
+def move_the_queue(queue, queue_first_position, queue_offset):
+    for i in range(len(queue)):
+        queue[i].set_position((queue_first_position[0] + queue_offset * i, queue_first_position[1]))

@@ -7,7 +7,9 @@ class Order:
     def __init__(self, laffa, meat_count=0, ingredient_list=[]):
         self.laffa = laffa
         self.meat_count = meat_count
-        self.toppings = ingredient_list
+        self.toppings = []
+        for i in ingredient_list:
+            self.toppings.append(Ingredient(i.name, i.on_laffa_x_pos, i.on_laffa_y_pos))
 
     def add_topping(self, topping):
         self.toppings.append(Ingredient(topping.name, topping.on_laffa_x_pos, topping.on_laffa_y_pos))
@@ -32,8 +34,8 @@ class Order:
         for topping in self.toppings:
             topping.show(shawarma_position, size)
 
-    def get_ingredient(self, number):
-        return self.toppings[number]
+    def get_ingredient_name(self, number):
+        return self.toppings[number].name
 
     def get_toppings_count(self):
         return len(self.toppings)
