@@ -15,3 +15,10 @@ class Ingredient:
         else:
             screen.blit(topping_images[self.name], (shawarma_position[0] + self.on_laffa_x_pos,
                                                     shawarma_position[1] + self.on_laffa_y_pos))
+
+    def get_on_laffa_position(self):
+        position = (self.on_laffa_x_pos, self.on_laffa_y_pos)
+        return position
+
+    def get_name(self):
+        return self.name

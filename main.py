@@ -172,9 +172,9 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                     return None
                 if come_new_customer(time_counter):
                     waiting_to_order_customers.append(get_random_customer())
-                    waiting_to_order_customers.set_position(
+                    waiting_to_order_customers[-1].set_position(
                         (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
-                        CUSTOMER_END_PATH_QUEUE[1]))
+                         CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 for intent in screen_navigation_button_dictionary:
@@ -311,13 +311,13 @@ def stage_bread():
                     bread_on_screen = True
                     del shawarmas_at_stages[current_stage]
                     if laffa_1_case:
-                        shawarmas_at_stages[current_stage] = Order("Type 1", 0)
+                        shawarmas_at_stages[current_stage] = Order("Type 1", Meat(0))
                         print("created type 1")
                     elif laffa_2_case:
-                        shawarmas_at_stages[current_stage] = Order("Type 2", 0)
+                        shawarmas_at_stages[current_stage] = Order("Type 2", Meat(0))
                         print("created type 2")
                     elif laffa_3_case:
-                        shawarmas_at_stages[current_stage] = Order("Type 3", 0)
+                        shawarmas_at_stages[current_stage] = Order("Type 3", Meat(0))
                         print("created type 3")
                 else:
                     bread_on_screen = False
@@ -676,7 +676,18 @@ def stage_take_order():
             my_timer -= 1
         elif my_timer == 0:
             my_timer -= 1
-            waiting_to_take_away_customers[0].change_image("reaction", "best")
+            grade = calculate_grade(waiting_to_take_away_customers[0].get_order(), shawarmas_at_stages[current_stage])
+            print(grade)
+            if 80 < grade <= 100:
+                waiting_to_take_away_customers[0].change_image("reaction", "best")
+            elif 60 < grade <= 80:
+                waiting_to_take_away_customers[0].change_image("reaction", "good")
+            elif 40 < grade <= 60:
+                waiting_to_take_away_customers[0].change_image("reaction", "normal")
+            elif 20 < grade <= 40:
+                waiting_to_take_away_customers[0].change_image("reaction", "bad")
+            elif 0 <= grade <= 20:
+                waiting_to_take_away_customers[0].change_image("reaction", "worst")
         else:
             screen.blit(checkmark_image, CHECKMARK_POSITION)
         waiting_to_take_away_customers[0].show()

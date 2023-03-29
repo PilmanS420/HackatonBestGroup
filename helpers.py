@@ -7,6 +7,11 @@ from classes.Order import Order
 from classes.Customer import Customer
 from classes.Ingredient import Ingredient
 import math
+from typing import List
+from collections import Counter
+from math import ceil
+from classes.Meat import Meat
+
 
 
 def mouse_on_any_button(buttons_dict, mouse_pos):
@@ -35,9 +40,9 @@ def get_random_order():
     laffa = random.choice(LAFFAS_LIST)
     has_meat = random.randint(1, 5)
     if has_meat >= 4:
-        meat = 3
+        meat = Meat(3, "medium")
     else:
-        meat = 0
+        meat = Meat(0, "medium")
     toppings_count = random.randint(MIN_INGREDIENTS_REQUESTED, MAX_INGREDIENTS_REQUESTED)
     potential_ingredients = list(INGREDIENTS_LIST)
     final_ingredients = []
@@ -84,3 +89,52 @@ def come_new_customer(timer_counter):
 def move_the_queue(queue, queue_first_position, queue_offset):
     for i in range(len(queue)):
         queue[i].set_position((queue_first_position[0] + queue_offset * i, queue_first_position[1]))
+
+
+# Function compair two shawarmas: customer`s order and player`s shawarma
+def calculate_grade(customer_order: Order, player_shawarma: Order) -> int:
+    grade = 0
+    # check bread type
+    if customer_order.laffa == player_shawarma.laffa:
+        grade += 30
+
+    # check meat type
+    if customer_order.get_meat_count() == player_shawarma.get_meat_count() and customer_order.meat.get_roasting() == player_shawarma.meat.get_roasting():
+        grade += 30
+
+    # check toppings amount
+    points = 0
+    toppings_count_order = {}
+    toppings_count_shawarma = {}
+    for i in INGREDIENTS_LIST:
+        toppings_count_order[i] = 0
+        toppings_count_shawarma[i] = 0
+    for i in customer_order.toppings:
+        toppings_count_order[i.get_name()] += 1
+    for i in customer_order.toppings:
+        toppings_count_shawarma[i.get_name()] += 1
+    for i in toppings_count_order.keys():
+        if toppings_count_order[i] == toppings_count_shawarma[i]:
+            points += 1
+        elif not(toppings_count_order[i] == 0 and toppings_count_shawarma[i] != 0 or
+                 toppings_count_order[i] != 0 and toppings_count_shawarma[i] == 0):  # Checks if there is no missing or extra ingredient type
+            if toppings_count_order[i] > toppings_count_shawarma[i]:
+                points += toppings_count_shawarma[i] / toppings_count_order[i]
+            else:
+                points += toppings_count_order[i] / toppings_count_shawarma[i]
+    # # check toppings placement  # TODO: add check by placement
+    # toppings_placements_order = {}
+    # toppings_placements_shawarma = {}
+    # for i in INGREDIENTS_LIST:
+    #     toppings_placements_order[i] = []
+    #     toppings_placements_shawarma[i] = []
+    # for i in customer_order.toppings:
+    #     toppings_placements_order[i.get_name()].append(i.get_on_laffa_position())
+    # for i in player_shawarma.toppings:
+    #     toppings_placements_shawarma[i.get_name()].append(i.get_on_laffa_position())
+    # for i in toppings_placements_order.keys():
+    #     for j in toppings_placements_order[i]
+
+    grade += points / 6 * 40
+
+    return grade

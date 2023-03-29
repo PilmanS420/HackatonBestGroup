@@ -2,10 +2,17 @@ from settings import *
 
 
 class Meat:
-    def __init__(self, roasting, on_laffa_x_pos, on_laffa_y_pos):
+    def __init__(self, count, roasting="raw"):
         self.roasting = roasting
-        self.on_laffa_x_pos = on_laffa_x_pos
-        self.on_laffa_y_pos = on_laffa_y_pos
+        self.count = count
 
-    def show(self, laffa_x_pos, laffa_y_pos):
-        screen.blit(meat_images[self.roasting], (laffa_x_pos + self.on_laffa_x_pos, laffa_y_pos + self.on_laffa_y_pos))
+    def get_count(self):
+        return self.count
+
+    def get_roasting(self):
+        return self.roasting
+
+    def add_meat(self):
+        self.count += 1
+        if self.count > 3:
+            self.count = 3
