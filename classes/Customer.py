@@ -49,6 +49,3 @@ class Customer:
             screen.blit(laffas_speech_box_images[self.order.get_laffa()], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
         else:
             screen.blit(topping_speech_box_images[self.order.get_ingredient(ingredient_num)], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
-
-
-8

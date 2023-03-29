@@ -15,15 +15,24 @@ class Order:
     def add_meat(self):
         self.meat_count += 1
 
-    def show_like_order(self):
-        pass
+    def show_like_order(self, steps):
+        screen.blit(laffas_order_images[self.get_laffa()], ORDER_LOCATION)
+        order_ingredient_locations = []
+        for step in range(1, steps):
+            if step > 1:
+                order_ingredient_location = (ORDER_LOCATION[0] + ORDER_INGREDIENT_SIZE[0], ORDER_LOCATION[1])
+                order_ingredient_locations.append(order_ingredient_location)
+        ingredient_num = 0
+        for order_ingredient_location in order_ingredient_locations:
+            screen.blit(topping_order_images[self.get_ingredient(ingredient_num)], order_ingredient_location)
+            ingredient_num += 1
 
     def show_like_shawarma(self, shawarma_position, size="medium"):
         if self.meat_count == 0:
             if size == "small":
-                screen.blit(laffas_medium_images[self.laffa], shawarma_position)
+                screen.blit(laffas_speech_box_images[self.laffa], shawarma_position)
             else:
-                screen.blit(laffas_small_images[self.laffa], shawarma_position)
+                screen.blit(laffas_images[self.laffa], shawarma_position)
         else:
             if size == "small":
                 screen.blit(laffas_with_meat_small_images[self.laffa][self.meat_count - 1], shawarma_position)

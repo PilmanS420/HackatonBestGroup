@@ -148,13 +148,29 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
     # Variable keeps count of ingredients into shawarma including laffa and meat
     toppings_count = current_customer.get_order().get_toppings_count()
 
+    mouse_pos = pygame.mouse.get_pos()
+    set_mouse_on(mouse_pos, on_text_box_button)
+    screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+    screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+    current_customer.show()
+    screen.blit(order_image, ORDER_POS)
+    current_customer.show_text_window(showing_ingredient_type, current_topping_num)
+    current_customer.get_order().show_like_order(current_topping_num)
+
     while current_stage == "order":
-        mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                set_mouse_on(mouse_pos, on_text_box_button)
+                screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+                current_customer.show()
+                screen.blit(order_image, ORDER_POS)
+                current_customer.show_text_window(showing_ingredient_type, current_topping_num)
+                current_customer.get_order().show_like_order(current_topping_num)
                 print(mouse_pos)
                 if on_text_box_button["text box"].mouse_on_button(mouse_pos):
                     current_customer.change_image("order")
@@ -167,6 +183,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         showing_ingredient_type = "topping"
                     else:
                         current_topping_num += 1
+                    current_customer.get_order().show_like_order(current_topping_num)
                     if current_topping_num == toppings_count:
                         current_stage = "queue"
                         current_customer.change_image("queue")
@@ -176,12 +193,6 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         waiting_to_take_away_customers.append(current_customer)
 
                         return None
-        set_mouse_on(mouse_pos, on_text_box_button)
-        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        current_customer.show()
-        current_customer.show_text_window(showing_ingredient_type, current_topping_num)
-        screen.blit(order_image, ORDER_POS)
         pygame.display.flip()
 
 
