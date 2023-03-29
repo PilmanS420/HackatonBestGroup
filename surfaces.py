@@ -108,3 +108,5 @@ trollface_customer_images = {
     }
 }
 meat_images = {}  # TODO: add meat images
+
+checkmark_image = pygame.transform.scale(pygame.image.load("images/other/checkmark.png"), CHECKMARK_SIZE)

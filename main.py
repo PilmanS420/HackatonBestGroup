@@ -74,7 +74,6 @@ def stage_queue():
             new_coming_customer.update(CUSTOMER_SPEED)
             new_coming_customer.show()
             if new_coming_customer.get_position()[0] <= CUSTOMER_END_PATH_QUEUE[0]:
-                new_coming_customer.set_position(CUSTOMER_END_PATH_QUEUE)
                 new_coming_customer.change_image("queue")
                 waiting_to_order_customers.append(new_coming_customer)
                 new_coming_customer = None
@@ -624,12 +623,17 @@ def stage_toppings():
                             return None
                 if toppings_falling_area_button.clicked_on(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
-                                                                 mouse_pos[
-                                                                     1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET,
-                                                                 mouse_pos[1]))
+                                                                 mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
+                if not spoon_cursor and checkmark_button.mouse_on(mouse_pos) and current_customer is not None:
+                    current_stage = "take order"
+                    current_customer.change_image("think")
+                    current_customer.set_position(CUSTOMER_POSITION_ORDER)
+                    return None
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        if current_customer is not None:
+            screen.blit(checkmark_image, CHECKMARK_POSITION)
         screen.blit(laffas_images["Type 1"], (LAFFA_X_POS, LAFFA_Y_POS))
 
         # Falling toppings updating and bliting
@@ -663,11 +667,47 @@ def stage_toppings():
                 screen.blit(spoon_images[current_topping], mouse_pos)
         else:
             pygame.mouse.set_visible(True)
-            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
-                    mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos):
+
+            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
+                    mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or\
+                    checkmark_button.mouse_on(mouse_pos) and current_customer is not None:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        pygame.display.flip()
+
+
+def stage_take_order():
+    global current_stage, current_customer
+    background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
+                                              (WINDOW_WIDTH, WINDOW_HEIGHT))
+    my_timer = 500
+    while current_stage == "take order":
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_stage = "exit"
+                return None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(mouse_pos)  # TODO: delete this print
+                if my_timer < 0 and checkmark_button.mouse_on(mouse_pos):
+                    del waiting_to_take_away_customers[0]
+                    current_customer = None
+                    current_stage = "queue"
+                    return None
+        if my_timer < 0 and checkmark_button.mouse_on(mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        if my_timer > 0:
+            my_timer -= 1
+        elif my_timer == 0:
+            my_timer -= 1
+            current_customer.change_image("reaction", "best")
+        else:
+            screen.blit(checkmark_image, CHECKMARK_POSITION)
+        current_customer.show()
         pygame.display.flip()
 
 
@@ -695,6 +735,8 @@ def main():
             stage_cooking()
         elif current_stage == "toppings":
             stage_toppings()
+        elif current_stage == "take order":
+            stage_take_order()
         elif current_stage == "settings":
             stage_settings()
     pygame.quit()

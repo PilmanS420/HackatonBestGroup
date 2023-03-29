@@ -37,6 +37,8 @@ toppings_stage_button_dictionary = {
     "salat": Button(RIGHT_TOPPINGS_X_POS, TOPPINGS_Y_POS + TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET, TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT),
     "onion": Button(RIGHT_TOPPINGS_X_POS, TOPPINGS_Y_POS + 2 * (TOPPING_BOX_HEIGHT + TOPPINGS_OFFSET), TOPPING_BOX_WIDTH, TOPPING_BOX_HEIGHT)}
 
+checkmark_button = Button(CHECKMARK_POSITION[0], CHECKMARK_POSITION[1], CHECKMARK_SIZE[0], CHECKMARK_SIZE[1])
+
 # Variable keeps area for toppings station, where you can throw ingredients on lafa
 toppings_falling_area_button = Button(LAFFA_X_POS, LAFFA_Y_POS - TOPPINGS_ABOVE_LAFFA_OFFSET, LAFFA_WIDTH, LAFFA_HEIGHT)
 
