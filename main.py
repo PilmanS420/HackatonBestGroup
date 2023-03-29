@@ -173,8 +173,8 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                 if come_new_customer(time_counter):
                     waiting_to_order_customers.append(get_random_customer())
                     waiting_to_order_customers.set_position(
-                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1)),
-                        CUSTOMER_END_PATH_QUEUE[1])
+                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
+                        CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 for intent in screen_navigation_button_dictionary:
