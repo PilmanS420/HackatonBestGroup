@@ -48,6 +48,6 @@ class Customer:
         elif to_show == "laffa":
             screen.blit(laffas_medium_images[self.order.get_laffa()], TEXT_BOX_COORDINATES)
         else:
-            screen.blit(topping_images[self.order.get_ingredient_name(ingredient_num)], TEXT_BOX_COORDINATES)
+            screen.blit(topping_images[self.order.get_uniqe_ingredient_name(ingredient_num)], TEXT_BOX_COORDINATES)
 
 

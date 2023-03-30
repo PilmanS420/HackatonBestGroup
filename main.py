@@ -38,7 +38,6 @@ def stage_queue():
                 if come_new_customer(time_counter):
                     has_new_coming_customer = True
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse_pos)
                 if len(waiting_to_order_customers) > 0 and take_order_button["take order"].mouse_on_button(mouse_pos):
                     waiting_to_take_away_customers.append(waiting_to_order_customers[0])
                     del waiting_to_order_customers[0]
@@ -157,7 +156,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
     showing_ingredient_type = "laffa"
     current_topping_num = 0
     # Variable keeps count of ingredients into shawarma including laffa and meat
-    toppings_count = waiting_to_take_away_customers[-1].get_order().get_toppings_count()
+    toppings_count = waiting_to_take_away_customers[-1].get_order().get_toppings_types_count()
 
     while current_stage == "order":
         mouse_pos = pygame.mouse.get_pos()

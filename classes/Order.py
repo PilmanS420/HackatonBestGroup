@@ -11,6 +11,10 @@ class Order:
         self.toppings = []
         for i in ingredient_list:
             self.toppings.append(Ingredient(i.name, i.on_laffa_x_pos, i.on_laffa_y_pos))
+        self.topping_types = []
+        for i in range(len(self.toppings)):
+            if not self.toppings[i].name in self.topping_types:
+                self.topping_types.append(self.toppings[i].name)
 
     def add_topping(self, topping):
         self.toppings.append(Ingredient(topping.name, topping.on_laffa_x_pos, topping.on_laffa_y_pos))
@@ -35,11 +39,14 @@ class Order:
         for topping in self.toppings:
             topping.show(shawarma_position, size)
 
-    def get_ingredient_name(self, number):
-        return self.toppings[number].name
+    def get_uniqe_ingredient_name(self, number):
+        return self.topping_types[number]
 
-    def get_toppings_count(self):
-        return len(self.toppings)
+    def get_toppings_types_count(self):
+        return len(self.topping_types)
+
+    def get_topping_types(self):
+        return self.topping_types
 
     def get_laffa(self):
         return self.laffa

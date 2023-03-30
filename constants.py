@@ -11,6 +11,7 @@ MIN_INGREDIENTS_REQUESTED = 0
 MAX_INGREDIENTS_REQUESTED = 5
 INGREDIENTS_LIST = ("harif", "humus", "cucumber", "thina", "salat", "onion")
 LAFFAS_LIST = ("Type 1", "Type 2", "Type 3")
+BEST_TOPPINGS_ON_LAFFA_COUNT = 12
 
 # Background screens size and location on the screen
 BACKGROUND_SCREENS_X = 0
