@@ -19,21 +19,30 @@ def stage_settings():
 
 
 def stage_queue():
-    global current_stage, current_customer, waiting_to_order_customers, waiting_to_take_away_customers, new_coming_customer, has_new_coming_customer
+    global current_stage, waiting_to_order_customers, waiting_to_take_away_customers, new_coming_customer, has_new_coming_customer, time_counter
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
     while current_stage == "queue":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.USEREVENT:
+                time_counter -= 1
+                if time_counter <= 0:
+                    current_stage = "exit"
+                    return None
+                if come_new_customer(time_counter):
+                    has_new_coming_customer = True
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 if len(waiting_to_order_customers) > 0 and take_order_button["take order"].mouse_on_button(mouse_pos):
-                    current_customer = waiting_to_order_customers[0]
+                    waiting_to_take_away_customers.append(waiting_to_order_customers[0])
                     del waiting_to_order_customers[0]
+                    move_the_queue(waiting_to_order_customers, CUSTOMER_END_PATH_QUEUE, QUEUE_OFFSET)
                     current_stage = "order"
                     return None
                 for button in screen_navigation_button_dictionary.keys():
@@ -63,6 +72,7 @@ def stage_queue():
         # Showing scene
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(timer_font.render(str(time_counter), True, TIMER_COLOR), TIMER_POSITION)
 
         # Showing customers at the back that are waiting to take their shawarma
         for i in waiting_to_take_away_customers:
@@ -73,7 +83,7 @@ def stage_queue():
             new_coming_customer.set_position(customer_steps_imitation(new_coming_customer.get_position()[0]))
             new_coming_customer.update(CUSTOMER_SPEED)
             new_coming_customer.show()
-            if new_coming_customer.get_position()[0] <= CUSTOMER_END_PATH_QUEUE[0]:
+            if new_coming_customer.get_position()[0] <= CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * len(waiting_to_order_customers):
                 new_coming_customer.change_image("queue")
                 waiting_to_order_customers.append(new_coming_customer)
                 new_coming_customer = None
@@ -84,6 +94,7 @@ def stage_queue():
         for i in waiting_to_order_customers:
             i.show()
         pygame.display.flip()
+        clock.tick(60)
 
 
 def stage_kosher():
@@ -134,48 +145,58 @@ def stage_start():
 
 
 def stage_order():  # TODO: make queue update to show customers at queue at different locations and not at one place
-    global current_stage, current_customer, waiting_to_take_away_customers
+    global current_stage, waiting_to_take_away_customers, time_counter
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE)
-    current_customer.change_image("order")
-    current_customer.set_position(CUSTOMER_POSITION_ORDER)
+    waiting_to_take_away_customers[-1].change_image("order")
+    waiting_to_take_away_customers[-1].set_position(CUSTOMER_POSITION_ORDER)
 
     # Variable keeps current ingredient (including laffa and meat) number
     showing_ingredient_type = "laffa"
     current_topping_num = 0
     # Variable keeps count of ingredients into shawarma including laffa and meat
-    toppings_count = current_customer.get_order().get_toppings_count()
+    toppings_count = waiting_to_take_away_customers[-1].get_order().get_toppings_count()
 
     mouse_pos = pygame.mouse.get_pos()
     set_mouse_on(mouse_pos, on_text_box_button)
     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
     screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-    current_customer.show()
+    waiting_to_take_away_customers[-1].show()
     screen.blit(order_image, ORDER_POS)
-    current_customer.show_text_window(showing_ingredient_type, current_topping_num)
-    current_customer.get_order().show_like_order(current_topping_num)
+    waiting_to_take_away_customers[-1].show_text_window(showing_ingredient_type, current_topping_num)
+    waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num)
 
     while current_stage == "order":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.USEREVENT:
+                time_counter -= 1
+                if time_counter <= 0:
+                    current_stage = "exit"
+                    return None
+                if come_new_customer(time_counter):
+                    waiting_to_order_customers.append(get_random_customer())
+                    waiting_to_order_customers[-1].set_position(
+                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
+                         CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 set_mouse_on(mouse_pos, on_text_box_button)
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                current_customer.show()
+                waiting_to_take_away_customers[-1].show()
                 screen.blit(order_image, ORDER_POS)
-                current_customer.show_text_window(showing_ingredient_type, current_topping_num)
-                current_customer.get_order().show_like_order(current_topping_num)
+                waiting_to_take_away_customers[-1].show_text_window(showing_ingredient_type, current_topping_num)
+                waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num)
                 print(mouse_pos)
                 if on_text_box_button["text box"].mouse_on_button(mouse_pos):
-                    current_customer.change_image("order")
+                    waiting_to_take_away_customers[-1].change_image("order")
                     if showing_ingredient_type == "laffa":
-                        if current_customer.get_order().has_meat():
+                        if waiting_to_take_away_customers[-1].get_order().has_meat():
                             showing_ingredient_type = "meat"
                         else:
                             showing_ingredient_type = "topping"
@@ -183,21 +204,18 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         showing_ingredient_type = "topping"
                     else:
                         current_topping_num += 1
-                    current_customer.get_order().show_like_order(current_topping_num)
+                    waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num)
                     if current_topping_num == toppings_count:
                         current_stage = "queue"
-                        current_customer.change_image("queue")
-                        current_customer.set_position((TAKE_AWAY_QUEUE_X_LOCATION,
-                                                       TAKE_AWAY_QUEUE_Y_LOCATION + TAKE_AWAY_QUEUE_OFFSET * len(
-                                                           waiting_to_take_away_customers)))
-                        waiting_to_take_away_customers.append(current_customer)
-
+                        waiting_to_take_away_customers[-1].change_image("queue")
+                        waiting_to_take_away_customers[-1].set_position((TAKE_AWAY_QUEUE_X_LOCATION + QUEUE_OFFSET * (len(
+                                                           waiting_to_take_away_customers) - 1), TAKE_AWAY_QUEUE_Y_LOCATION))
                         return None
         pygame.display.flip()
 
 
 def stage_bread():
-    global current_stage
+    global current_stage, time_counter, waiting_to_order_customers
     laffa_1_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"),
                                            (242, 171))
     laffa_2_image = pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"),
@@ -234,6 +252,16 @@ def stage_bread():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.USEREVENT:
+                time_counter -= 1
+                if time_counter <= 0:
+                    current_stage = "exit"
+                    return None
+                if come_new_customer(time_counter):
+                    waiting_to_order_customers.append(get_random_customer())
+                    waiting_to_order_customers[-1].set_position(
+                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
+                         CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 for intent in screen_navigation_button_dictionary:
@@ -253,7 +281,8 @@ def stage_bread():
                     laffa_3_case = True
 
                 if bread_on_screen:
-                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530:  # TODO: change to button
+                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530 and\
+                            shawarmas_at_stages["toppings"] is None:  # TODO: change to button
                         shawarmas_at_stages["cooking"] = shawarmas_at_stages[current_stage]
                         shawarmas_at_stages[current_stage] = None
                         current_stage = "cooking"  # TODO: MOVE TO STAGE COOKING AND TROUBLESHOOT
@@ -282,12 +311,16 @@ def stage_bread():
                 hold_release_cords = mouse_pos
                 if 726 >= hold_release_cords[1] >= 466 and 1309 >= hold_release_cords[0] >= 721:  # TODO: change to button
                     bread_on_screen = True
+                    del shawarmas_at_stages[current_stage]
                     if laffa_1_case:
-                        shawarmas_at_stages[current_stage] = Order("Type 1", False)
+                        shawarmas_at_stages[current_stage] = Order("Type 1", Meat(0))
+                        print("created type 1")
                     elif laffa_2_case:
-                        shawarmas_at_stages[current_stage] = Order("Type 2", False)
+                        shawarmas_at_stages[current_stage] = Order("Type 2", Meat(0))
+                        print("created type 2")
                     elif laffa_3_case:
-                        shawarmas_at_stages[current_stage] = Order("Type 3", False)
+                        shawarmas_at_stages[current_stage] = Order("Type 3", Meat(0))
+                        print("created type 3")
                 else:
                     bread_on_screen = False
                     shawarmas_at_stages[current_stage] = None
@@ -316,6 +349,7 @@ def stage_bread():
             shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_BREAD_STAGE_POSITION, "medium")
 
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit screen buttons
+        screen.blit(timer_font.render(str(time_counter), True, TIMER_COLOR), TIMER_POSITION)
         if len(laffa_list) >= 1:
             screen.blit(laffa_list[0], mouse_pos)  # blit small dragging laffas
 
@@ -340,7 +374,7 @@ def stage_bread():
 
 
 def stage_cooking():  # TODO: Find a way to present animation without lags
-    global current_stage
+    global current_stage, time_counter, waiting_to_order_customers
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background_cooking.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     meat_list = []
@@ -361,6 +395,16 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.USEREVENT:
+                time_counter -= 1
+                if time_counter <= 0:
+                    current_stage = "exit"
+                    return None
+                if come_new_customer(time_counter):
+                    waiting_to_order_customers.append(get_random_customer())
+                    waiting_to_order_customers[-1].set_position(
+                        (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
+                         CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(mouse_pos)
                 for intent in screen_navigation_button_dictionary:
@@ -392,6 +436,7 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
+        screen.blit(timer_font.render(str(time_counter), True, TIMER_COLOR), TIMER_POSITION)
 
         if meat_on_screen:  # cook meat and display timer
             if secs < 10:
@@ -509,7 +554,7 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
 
 
 def stage_toppings():
-    global current_stage
+    global current_stage, time_counter, waiting_to_order_customers
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/kosher_toppy.jpg"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -522,6 +567,14 @@ def stage_toppings():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
                 return None
+            if event.type == pygame.USEREVENT:
+                time_counter -= 1
+                if time_counter <= 0:
+                    current_stage = "exit"
+                    return None
+                if come_new_customer(time_counter):
+                    waiting_to_order_customers.append(get_random_customer())
+                    waiting_to_order_customers[-1].set_position((CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1), CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for topping in toppings_stage_button_dictionary:  # A cycle checking if one of toppings has taken
                     if toppings_stage_button_dictionary[topping].mouse_on_button(mouse_pos):
@@ -540,17 +593,18 @@ def stage_toppings():
                         toppings_falling_area_button.mouse_on_button(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
                                                                  mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
-                if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and current_customer is not None and shawarmas_at_stages[current_stage] is not None:
+                if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and len(waiting_to_take_away_customers) > 0 and shawarmas_at_stages[current_stage] is not None:
                     shawarmas_at_stages["take order"] = shawarmas_at_stages[current_stage]
                     shawarmas_at_stages[current_stage] = None
                     current_stage = "take order"
-                    current_customer.change_image("think")
-                    current_customer.set_position(CUSTOMER_POSITION_ORDER)
+                    waiting_to_take_away_customers[0].change_image("think")
+                    waiting_to_take_away_customers[0].set_position(CUSTOMER_POSITION_ORDER)
                     return None
 
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        if current_customer is not None and shawarmas_at_stages[current_stage] is not None:
+        screen.blit(timer_font.render(str(time_counter), True, TIMER_COLOR), TIMER_POSITION)
+        if len(waiting_to_take_away_customers) > 0 and shawarmas_at_stages[current_stage] is not None:
             screen.blit(checkmark_image, CHECKMARK_POSITION)
         if shawarmas_at_stages[current_stage] is not None:
             shawarmas_at_stages[current_stage].show_like_shawarma((LAFFA_X_POS, LAFFA_Y_POS))
@@ -589,7 +643,7 @@ def stage_toppings():
 
             if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
                     mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or\
-                    checkmark_button.mouse_on_button(mouse_pos) and current_customer is not None:
+                    checkmark_button.mouse_on_button(mouse_pos) and len(waiting_to_take_away_customers) > 0:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -597,7 +651,7 @@ def stage_toppings():
 
 
 def stage_take_order():
-    global current_stage, current_customer
+    global current_stage
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     my_timer = 500
@@ -610,8 +664,9 @@ def stage_take_order():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if my_timer < 0 and checkmark_button.mouse_on_button(mouse_pos):
                     del waiting_to_take_away_customers[0]
-                    current_customer = None
+                    move_the_queue(waiting_to_take_away_customers, (TAKE_AWAY_QUEUE_X_LOCATION, TAKE_AWAY_QUEUE_Y_LOCATION), QUEUE_OFFSET)
                     current_stage = "queue"
+                    shawarmas_at_stages[current_stage] = None
                     return None
         if my_timer < 0 and checkmark_button.mouse_on_button(mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -623,10 +678,21 @@ def stage_take_order():
             my_timer -= 1
         elif my_timer == 0:
             my_timer -= 1
-            current_customer.change_image("reaction", "best")
+            grade = calculate_grade(waiting_to_take_away_customers[0].get_order(), shawarmas_at_stages[current_stage])
+            print(grade)
+            if 80 < grade <= 100:
+                waiting_to_take_away_customers[0].change_image("reaction", "best")
+            elif 60 < grade <= 80:
+                waiting_to_take_away_customers[0].change_image("reaction", "good")
+            elif 40 < grade <= 60:
+                waiting_to_take_away_customers[0].change_image("reaction", "normal")
+            elif 20 < grade <= 40:
+                waiting_to_take_away_customers[0].change_image("reaction", "bad")
+            elif 0 <= grade <= 20:
+                waiting_to_take_away_customers[0].change_image("reaction", "worst")
         else:
             screen.blit(checkmark_image, CHECKMARK_POSITION)
-        current_customer.show()
+        waiting_to_take_away_customers[0].show()
         pygame.display.flip()
 
 
@@ -661,7 +727,6 @@ def main():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     global current_stage
-    global current_customer
     global new_coming_customer
     global waiting_to_order_customers
     global waiting_to_take_away_customers

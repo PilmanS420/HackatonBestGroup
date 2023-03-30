@@ -1,7 +1,7 @@
 from settings import *
 from classes.Order import Order
 import random
-from surfaces import empty_text_box, laffas_speech_box_images, topping_speech_box_images
+from surfaces import empty_text_box, laffas_speech_box_images, topping_speech_box_images, meat_to_present_in_speech
 
 
 class Customer:
@@ -44,8 +44,8 @@ class Customer:
     def show_text_window(self, to_show, ingredient_num=0):  # TODO: add new images to present ingredients better (Aviel)
         screen.blit(empty_text_box, TEXT_BOX_COORDINATES)
         if to_show == "meat":
-            pass
+            screen.blit(meat_to_present_in_speech["meat"], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
         elif to_show == "laffa":
             screen.blit(laffas_speech_box_images[self.order.get_laffa()], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
         else:
-            screen.blit(topping_speech_box_images[self.order.get_ingredient(ingredient_num)], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
+            screen.blit(topping_speech_box_images[self.order.get_ingredient_name(ingredient_num)], (TEXT_BOX_COORDINATES[0] + 43, TEXT_BOX_COORDINATES[1] + 35))
