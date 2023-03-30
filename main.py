@@ -465,37 +465,38 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
                     screen.blit(meat_images["raw"][1], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
+                    pygame.time.wait(1000)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["raw"][2], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
+                    pygame.time.wait(1000)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["raw"][3], (766, 214))
                     pygame.display.flip()
 
-                    # time.sleep(1.3)
-                    # for i in range(420):
+                    # pygame.time.wait(1000)
+                    # for i in range(60):
                     #     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-                    #     shawarmas_at_stages[current_stage].show_like_shawarma((720, (1100-(2*i))))
+                    #     shawarmas_at_stages[current_stage].show_like_shawarma((720, (1100-(5*i))))
+                    #     clock.tick(60)
                     #     pygame.display.flip()
                 elif current_meat == meat_images["medium"][0]:
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["medium"][1], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
+                    pygame.time.wait(1000)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["medium"][2], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
+                    pygame.time.wait(1000)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["medium"][3], (766, 214))
                     pygame.display.flip()
 
-                    # time.sleep(1)
+                    # pygame.time.wait(1000)
                     # for i in range(420):
                     #     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     #     shawarmas_at_stages[current_stage].show_like_shawarma((720, (1100-(2*i))))
@@ -506,41 +507,41 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
                     screen.blit(meat_images["well done"][1], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
+                    pygame.time.wait(1000)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["well done"][2], (766, 214))
                     pygame.display.flip()
 
-                    time.sleep(1)
+                    pygame.time.wait(1000)
                     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     screen.blit(meat_images["well done"][3], (766, 214))
                     pygame.display.flip()
 
-                    # time.sleep(1.3)
+                    # pygame.time.wait(1000)
                     # for i in range(420):
                     #     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                     #     shawarmas_at_stages[current_stage].show_like_shawarma(720, (1100-(2*i)))
                     #     pygame.display.flip()
 
-                time.sleep(0.5)
+                pygame.time.wait(500)
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 shawarmas_at_stages[current_stage].add_meat()
                 shawarmas_at_stages[current_stage].show_like_shawarma((720, 200))
                 pygame.display.flip()
 
-                time.sleep(1)
+                pygame.time.wait(1000)
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 shawarmas_at_stages[current_stage].add_meat()
                 shawarmas_at_stages[current_stage].show_like_shawarma((720, 200))
                 pygame.display.flip()
 
-                time.sleep(1)
+                pygame.time.wait(1000)
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 shawarmas_at_stages[current_stage].add_meat()
                 shawarmas_at_stages[current_stage].show_like_shawarma((720, 200))
                 pygame.display.flip()
 
-                time.sleep(1)
+                pygame.time.wait(1000)
                 shawarmas_at_stages["toppings"] = shawarmas_at_stages[current_stage]
                 shawarmas_at_stages[current_stage] = None
                 current_stage = "toppings"
