@@ -3,7 +3,7 @@ from surfaces import meat_images
 
 
 class Meat:
-    def __init__(self, count, roasting="raw"):
+    def __init__(self, count, roasting="medium"):
         self.roasting = roasting
         self.count = count
 

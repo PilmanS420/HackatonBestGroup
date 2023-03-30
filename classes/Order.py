@@ -53,26 +53,23 @@ class Order:
         ingredient_num = 0
         for order_ingredient_location in order_ingredient_locations:
             if order_size == ORDER_SIZE_BIG:
-                screen.blit(topping_order_images_big[self.get_ingredient_name(ingredient_num)],
+                screen.blit(topping_order_images_big[self.get_uniqe_ingredient_name(ingredient_num)],
                             order_ingredient_location)
                 ingredient_num += 1
             else:
-                screen.blit(topping_order_images[self.get_ingredient_name(ingredient_num)], order_ingredient_location)
+                screen.blit(topping_order_images[self.get_uniqe_ingredient_name(ingredient_num)], order_ingredient_location)
                 ingredient_num += 1
 
-    def show_like_shawarma(self, shawarma_position, size="medium"):
-        if self.meat.get_count() == 0:
-            if size == "small":
-                screen.blit(laffas_speech_box_images[self.laffa], shawarma_position)
-            else:
-                screen.blit(laffas_images[self.laffa], shawarma_position)
+    def show_like_shawarma(self, shawarma_position, is_closed=False):
+        if is_closed:
+            screen.blit(shawarma_closed, SHAWARMA_TAKE_ORDER_STAGE_POSITION)
         else:
-            if size == "small":
-                screen.blit(laffas_with_meat_small_images[self.laffa][self.meat.get_count() - 1], shawarma_position)
+            if self.meat.get_count() == 0:
+                screen.blit(laffas_images[self.laffa], shawarma_position)
             else:
                 screen.blit(laffas_with_meat_medium_images[self.laffa][self.meat.get_count() - 1], shawarma_position)
-        for topping in self.toppings:
-            topping.show(shawarma_position, size)
+            for topping in self.toppings:
+                topping.show(shawarma_position)
 
     def get_uniqe_ingredient_name(self, number):
         return self.topping_types[number]

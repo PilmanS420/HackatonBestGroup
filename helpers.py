@@ -122,55 +122,55 @@ def calculate_grade(customer_order: Order, player_shawarma: Order) -> int:
                 points += toppings_count_shawarma[i] / toppings_count_order[i]
             else:
                 points += toppings_count_order[i] / toppings_count_shawarma[i]
-    # Check toppings' placement. This part of checks used to check if toppings on shawarma are spread on laffa equally
-    toppings_placements_order = {}
-    toppings_placements_shawarma = {}
-    sum_toppings_placements_order = {}
-    sum_toppings_placements_shawarma = {}
-    for i in INGREDIENTS_LIST:
-        toppings_placements_order[i] = []
-        toppings_placements_shawarma[i] = []
-    for i in customer_order.toppings:
-        toppings_placements_order[i.get_name()].append(i.get_on_laffa_position())
-    for i in player_shawarma.toppings:
-        toppings_placements_shawarma[i.get_name()].append(i.get_on_laffa_position())
-    # Sum all placements
-    for i in toppings_placements_order.keys():
-        sum_toppings_placements_order[i] = sum_tuples(toppings_placements_order[i])
-    for i in toppings_placements_shawarma.keys():
-        sum_toppings_placements_shawarma[i] = sum_tuples(toppings_placements_shawarma[i])
-    # Arithmetical center:
-    arithmetical_tuples_order = {}
-    arithmetical_tuples_shawarma = {}
-    for i in sum_toppings_placements_order.keys():
-        if toppings_count_order[i] != 0:
-            arithmetical_tuples_order[i] = (sum_toppings_placements_order[i][0] / toppings_count_order[i],
-                                            sum_toppings_placements_order[i][0] / toppings_count_order[i])
-        else:
-            arithmetical_tuples_order[i] = (0, 0)
-    for i in sum_toppings_placements_shawarma.keys():
-        if toppings_count_shawarma[i] != 0:
-            arithmetical_tuples_shawarma[i] = (sum_toppings_placements_shawarma[i][0] / toppings_count_shawarma[i],
-                                               sum_toppings_placements_shawarma[i][0] / toppings_count_shawarma[i])
-        else:
-            arithmetical_tuples_shawarma[i] = (0, 0)
-    mon = 1
-    for i in arithmetical_tuples_order.keys():
-        if not(arithmetical_tuples_order[i][0] == 0 or arithmetical_tuples_order[i][1] == 0) and\
-                not(arithmetical_tuples_shawarma[i][0] == 0 or arithmetical_tuples_shawarma[i][1] == 0):
-            if arithmetical_tuples_order[i][0] > arithmetical_tuples_shawarma[i][0]:
-                mon *= arithmetical_tuples_shawarma[i][0] / arithmetical_tuples_order[i][0]
-            else:
-                mon *= arithmetical_tuples_order[i][0] / arithmetical_tuples_shawarma[i][0]
-            if arithmetical_tuples_order[i][1] > arithmetical_tuples_shawarma[i][1]:
-                mon *= arithmetical_tuples_shawarma[i][1] / arithmetical_tuples_order[i][1]
-            else:
-                mon *= arithmetical_tuples_order[i][1] / arithmetical_tuples_shawarma[i][1]
+    # # Check toppings' placement. This part of checks used to check if toppings on shawarma are spread on laffa equally
+    # toppings_placements_order = {}
+    # toppings_placements_shawarma = {}
+    # sum_toppings_placements_order = {}
+    # sum_toppings_placements_shawarma = {}
+    # for i in INGREDIENTS_LIST:
+    #     toppings_placements_order[i] = []
+    #     toppings_placements_shawarma[i] = []
+    # for i in customer_order.toppings:
+    #     toppings_placements_order[i.get_name()].append(i.get_on_laffa_position())
+    # for i in player_shawarma.toppings:
+    #     toppings_placements_shawarma[i.get_name()].append(i.get_on_laffa_position())
+    # # Sum all placements
+    # for i in toppings_placements_order.keys():
+    #     sum_toppings_placements_order[i] = sum_tuples(toppings_placements_order[i])
+    # for i in toppings_placements_shawarma.keys():
+    #     sum_toppings_placements_shawarma[i] = sum_tuples(toppings_placements_shawarma[i])
+    # # Arithmetical center:
+    # arithmetical_tuples_order = {}
+    # arithmetical_tuples_shawarma = {}
+    # for i in sum_toppings_placements_order.keys():
+    #     if toppings_count_order[i] != 0:
+    #         arithmetical_tuples_order[i] = (sum_toppings_placements_order[i][0] / toppings_count_order[i],
+    #                                         sum_toppings_placements_order[i][0] / toppings_count_order[i])
+    #     else:
+    #         arithmetical_tuples_order[i] = (0, 0)
+    # for i in sum_toppings_placements_shawarma.keys():
+    #     if toppings_count_shawarma[i] != 0:
+    #         arithmetical_tuples_shawarma[i] = (sum_toppings_placements_shawarma[i][0] / toppings_count_shawarma[i],
+    #                                            sum_toppings_placements_shawarma[i][0] / toppings_count_shawarma[i])
+    #     else:
+    #         arithmetical_tuples_shawarma[i] = (0, 0)
+    # mon = 1
+    # for i in arithmetical_tuples_order.keys():
+    #     if not(arithmetical_tuples_order[i][0] == 0 or arithmetical_tuples_order[i][1] == 0) and\
+    #             not(arithmetical_tuples_shawarma[i][0] == 0 or arithmetical_tuples_shawarma[i][1] == 0):
+    #         if arithmetical_tuples_order[i][0] > arithmetical_tuples_shawarma[i][0]:
+    #             mon *= arithmetical_tuples_shawarma[i][0] / arithmetical_tuples_order[i][0]
+    #         else:
+    #             mon *= arithmetical_tuples_order[i][0] / arithmetical_tuples_shawarma[i][0]
+    #         if arithmetical_tuples_order[i][1] > arithmetical_tuples_shawarma[i][1]:
+    #             mon *= arithmetical_tuples_shawarma[i][1] / arithmetical_tuples_order[i][1]
+    #         else:
+    #             mon *= arithmetical_tuples_order[i][1] / arithmetical_tuples_shawarma[i][1]
 
-    grade += points / 6 * 20
-    print("for count", points / 6 * 20)
-    print("for placement", mon * 20)
-    grade += mon * 20
+    grade += points / 6 * 40
+    print("for count", points / 6 * 40)
+    # print("for placement", mon * 20)
+    # grade += mon * 20
 
     return grade
 

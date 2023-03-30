@@ -96,7 +96,7 @@ def stage_queue():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_types_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
         clock.tick(60)
 
@@ -172,6 +172,8 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
     waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num, ORDER_SIZE_BIG)
 
     while current_stage == "order":
+        mouse_pos = pygame.mouse.get_pos()
+        set_mouse_on(mouse_pos, on_text_box_button)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
@@ -187,8 +189,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
                          CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                set_mouse_on(mouse_pos, on_text_box_button)
+
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 waiting_to_take_away_customers[-1].show()
@@ -213,6 +214,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         waiting_to_take_away_customers[-1].set_position((TAKE_AWAY_QUEUE_X_LOCATION + QUEUE_OFFSET * (len(
                                                            waiting_to_take_away_customers) - 1), TAKE_AWAY_QUEUE_Y_LOCATION))
                         return None
+
         pygame.display.flip()
 
 
@@ -348,7 +350,7 @@ def stage_bread():
                         (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit new background
 
         if shawarmas_at_stages[current_stage] is not None:
-            shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_BREAD_STAGE_POSITION, "medium")
+            shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_BREAD_STAGE_POSITION)
 
         screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))  # blit screen buttons
         screen.blit(timer_font.render(str(time_counter), True, TIMER_COLOR), TIMER_POSITION)
@@ -375,7 +377,7 @@ def stage_bread():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(len(waiting_to_take_away_customers[0].get_order().get_topping_types()) + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -559,7 +561,7 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_types_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -661,7 +663,7 @@ def stage_toppings():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_types_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -688,7 +690,8 @@ def stage_take_order():
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
-        shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_TAKE_ORDER_STAGE_POSITION, "small")
+        shawarmas_at_stages[current_stage].show_like_shawarma(SHAWARMA_TAKE_ORDER_STAGE_POSITION, True)
+        waiting_to_take_away_customers[0].show()
         if my_timer > 0:
             my_timer -= 1
         elif my_timer == 0:
@@ -711,7 +714,7 @@ def stage_take_order():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_types_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
