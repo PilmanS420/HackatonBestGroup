@@ -25,44 +25,87 @@ topping_images = {
     "salat": pygame.transform.scale(pygame.image.load("images/ingredients/salat.png"), (TOPPING_WIDTH, TOPPING_HEIGHT)),
     "onion": pygame.transform.scale(pygame.image.load("images/ingredients/onion.png"), (TOPPING_WIDTH, TOPPING_HEIGHT))
 }
-laffas_medium_images = {
-    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), SHAWARMA_MEDIUM_SIZE),
-    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), SHAWARMA_MEDIUM_SIZE),
-    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), SHAWARMA_MEDIUM_SIZE),
+topping_speech_box_images = {
+    "harif": pygame.transform.scale(pygame.image.load("images/ingredients/harif.png"), TOPPING_SPEECH_BOX_SIZE),
+    "humus": pygame.transform.scale(pygame.image.load("images/ingredients/humus.png"), TOPPING_SPEECH_BOX_SIZE),
+    "cucumber": pygame.transform.scale(pygame.image.load("images/ingredients/cucumber.png"), TOPPING_SPEECH_BOX_SIZE),
+    "thina": pygame.transform.scale(pygame.image.load("images/ingredients/thina.png"), TOPPING_SPEECH_BOX_SIZE),
+    "salat": pygame.transform.scale(pygame.image.load("images/ingredients/salat.png"), TOPPING_SPEECH_BOX_SIZE),
+    "onion": pygame.transform.scale(pygame.image.load("images/ingredients/onion.png"), TOPPING_SPEECH_BOX_SIZE)
 }
-laffas_small_images = {
-    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), SHAWARMA_SMALL_SIZE),
-    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), SHAWARMA_SMALL_SIZE),
-    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), SHAWARMA_SMALL_SIZE),
+meat_to_present_in_speech = {
+    "meat": pygame.transform.scale(pygame.image.load("images/ingredients/meat_to_present_in_order.png"), TOPPING_SPEECH_BOX_SIZE)
 }
-
+topping_order_images_big = {
+    "harif": pygame.transform.scale(pygame.image.load("images/ingredients/harif.png"), ORDER_INGREDIENT_SIZE_BIG),
+    "humus": pygame.transform.scale(pygame.image.load("images/ingredients/humus.png"), ORDER_INGREDIENT_SIZE_BIG),
+    "cucumber": pygame.transform.scale(pygame.image.load("images/ingredients/cucumber.png"), ORDER_INGREDIENT_SIZE_BIG),
+    "thina": pygame.transform.scale(pygame.image.load("images/ingredients/thina.png"), ORDER_INGREDIENT_SIZE_BIG),
+    "salat": pygame.transform.scale(pygame.image.load("images/ingredients/salat.png"), ORDER_INGREDIENT_SIZE_BIG),
+    "onion": pygame.transform.scale(pygame.image.load("images/ingredients/onion.png"), ORDER_INGREDIENT_SIZE_BIG)
+}
+topping_order_images = {
+    "harif": pygame.transform.scale(pygame.image.load("images/ingredients/harif.png"), ORDER_INGREDIENT_SIZE),
+    "humus": pygame.transform.scale(pygame.image.load("images/ingredients/humus.png"), ORDER_INGREDIENT_SIZE),
+    "cucumber": pygame.transform.scale(pygame.image.load("images/ingredients/cucumber.png"), ORDER_INGREDIENT_SIZE),
+    "thina": pygame.transform.scale(pygame.image.load("images/ingredients/thina.png"), ORDER_INGREDIENT_SIZE),
+    "salat": pygame.transform.scale(pygame.image.load("images/ingredients/salat.png"), ORDER_INGREDIENT_SIZE),
+    "onion": pygame.transform.scale(pygame.image.load("images/ingredients/onion.png"), ORDER_INGREDIENT_SIZE)
+}
+meat_to_present_in_order_big = {
+    "meat": pygame.transform.scale(pygame.image.load("images/ingredients/meat_to_present_in_order.png"), ORDER_INGREDIENT_SIZE_BIG)
+}
+meat_to_present_in_order = {
+    "meat": pygame.transform.scale(pygame.image.load("images/ingredients/meat_to_present_in_order.png"), ORDER_INGREDIENT_SIZE)
+}
+laffas_images = {
+    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), SHAWARMA_SIZE),
+    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), SHAWARMA_SIZE),
+    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), SHAWARMA_SIZE),
+}
+laffas_speech_box_images = {
+    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), SHAWARMA_SPEECH_BOX_SIZE),
+    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), SHAWARMA_SPEECH_BOX_SIZE),
+    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), SHAWARMA_SPEECH_BOX_SIZE),
+}
+laffas_order_images_big = {
+    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), ORDER_LAFFA_SIZE_BIG),
+    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), ORDER_LAFFA_SIZE_BIG),
+    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), ORDER_LAFFA_SIZE_BIG),
+}
+laffas_order_images = {
+    "Type 1": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_1.png"), ORDER_LAFFA_SIZE),
+    "Type 2": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_2.png"), ORDER_LAFFA_SIZE),
+    "Type 3": pygame.transform.scale(pygame.image.load("images/laffas/laffa_cutted_3.png"), ORDER_LAFFA_SIZE),
+}
 laffas_with_meat_medium_images = {
     "Type 1": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), SHAWARMA_MEDIUM_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), SHAWARMA_MEDIUM_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), SHAWARMA_MEDIUM_SIZE)],
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), SHAWARMA_SIZE)],
     "Type 2": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), SHAWARMA_MEDIUM_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), SHAWARMA_MEDIUM_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), SHAWARMA_MEDIUM_SIZE)],
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), SHAWARMA_SIZE)],
     "Type 3": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), SHAWARMA_MEDIUM_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), SHAWARMA_MEDIUM_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), SHAWARMA_MEDIUM_SIZE)]}
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), SHAWARMA_SIZE)]
+}
 
 laffas_with_meat_small_images = {
     "Type 1": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), SHAWARMA_SMALL_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), SHAWARMA_SMALL_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), SHAWARMA_SMALL_SIZE)],
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), SHAWARMA_SIZE)],
     "Type 2": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), SHAWARMA_SMALL_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), SHAWARMA_SMALL_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), SHAWARMA_SMALL_SIZE)],
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), SHAWARMA_SIZE)],
     "Type 3": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), SHAWARMA_SMALL_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), SHAWARMA_SMALL_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), SHAWARMA_SMALL_SIZE)]}
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), SHAWARMA_SIZE)]}
 
 meat_1_image = pygame.transform.scale(pygame.image.load("images/meats/meat_1.png"),
                                           PRESENTING_MEAT_SIZE)

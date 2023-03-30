@@ -1,4 +1,5 @@
 from settings import *
+from surfaces import meat_images
 
 
 class Meat:
