@@ -24,6 +24,7 @@ def stage_queue():
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/background1.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.time.set_timer(pygame.USEREVENT, 1000)
+    pygame.mixer.music.stop()
     while current_stage == "queue":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -46,7 +47,8 @@ def stage_queue():
                     current_stage = "order"
                     return None
                 for button in screen_navigation_button_dictionary.keys():
-                    if screen_navigation_button_dictionary[button].mouse_on_button(mouse_pos) and button != current_stage:
+                    if screen_navigation_button_dictionary[button].mouse_on_button(
+                            mouse_pos) and button != current_stage:
                         current_stage = button
                         return None
 
@@ -83,7 +85,8 @@ def stage_queue():
             new_coming_customer.set_position(customer_steps_imitation(new_coming_customer.get_position()[0]))
             new_coming_customer.update(CUSTOMER_SPEED)
             new_coming_customer.show()
-            if new_coming_customer.get_position()[0] <= CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * len(waiting_to_order_customers):
+            if new_coming_customer.get_position()[0] <= CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * len(
+                    waiting_to_order_customers):
                 new_coming_customer.change_image("queue")
                 waiting_to_order_customers.append(new_coming_customer)
                 new_coming_customer = None
@@ -97,7 +100,8 @@ def stage_queue():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(
+                waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
         clock.tick(60)
 
@@ -131,6 +135,8 @@ def stage_start():
     global current_stage
     background = pygame.image.load("images/background_images/main_menu_screen.png")
     background = pygame.transform.scale(background, (BACKGROUND_SCREENS_WIDTH, BACKGROUND_SCREENS_HEIGHT))
+    pygame.mixer.music.load("music/main menu theme.mp3")
+    pygame.mixer.music.play(-1)
     while current_stage == "start":
         screen.blit(background, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         for event in pygame.event.get():
@@ -173,6 +179,8 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
     waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num, ORDER_SIZE_BIG)
 
     while current_stage == "order":
+        mouse_pos = pygame.mouse.get_pos()
+        set_mouse_on(mouse_pos, on_text_box_button)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_stage = "exit"
@@ -188,8 +196,6 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         (CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1),
                          CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                set_mouse_on(mouse_pos, on_text_box_button)
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 waiting_to_take_away_customers[-1].show()
@@ -211,8 +217,9 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                     if current_topping_num == toppings_count:
                         current_stage = "queue"
                         waiting_to_take_away_customers[-1].change_image("queue")
-                        waiting_to_take_away_customers[-1].set_position((TAKE_AWAY_QUEUE_X_LOCATION + QUEUE_OFFSET * (len(
-                                                           waiting_to_take_away_customers) - 1), TAKE_AWAY_QUEUE_Y_LOCATION))
+                        waiting_to_take_away_customers[-1].set_position(
+                            (TAKE_AWAY_QUEUE_X_LOCATION + QUEUE_OFFSET * (len(
+                                waiting_to_take_away_customers) - 1), TAKE_AWAY_QUEUE_Y_LOCATION))
                         return None
         pygame.display.flip()
 
@@ -284,7 +291,7 @@ def stage_bread():
                     laffa_3_case = True
 
                 if bread_on_screen:
-                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530 and\
+                    if 1789 >= mouse_pos[0] >= 1592 and 725 >= mouse_pos[1] >= 530 and \
                             shawarmas_at_stages["toppings"] is None:  # TODO: change to button
                         shawarmas_at_stages["cooking"] = shawarmas_at_stages[current_stage]
                         shawarmas_at_stages[current_stage] = None
@@ -312,7 +319,8 @@ def stage_bread():
                 currently_dragging = False
                 pygame.mouse.set_visible(True)
                 hold_release_cords = mouse_pos
-                if 726 >= hold_release_cords[1] >= 466 and 1309 >= hold_release_cords[0] >= 721:  # TODO: change to button
+                if 726 >= hold_release_cords[1] >= 466 and 1309 >= hold_release_cords[
+                    0] >= 721:  # TODO: change to button
                     bread_on_screen = True
                     del shawarmas_at_stages[current_stage]
                     if laffa_1_case:
@@ -376,7 +384,8 @@ def stage_bread():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(
+                waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -436,7 +445,8 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
                 currently_dragging = False
                 pygame.mouse.set_visible(True)
                 hold_release_cords = mouse_pos
-                if 966 >= hold_release_cords[0] >= 844 and 430 >= hold_release_cords[1] >= 270 and shawarmas_at_stages[current_stage] is not None:
+                if 966 >= hold_release_cords[0] >= 844 and 430 >= hold_release_cords[1] >= 270 and shawarmas_at_stages[
+                    current_stage] is not None:
                     meat_on_screen = True
                 else:
                     meat_on_screen = False
@@ -560,7 +570,8 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(
+                waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -585,7 +596,8 @@ def stage_toppings():
                     return None
                 if come_new_customer(time_counter):
                     waiting_to_order_customers.append(get_random_customer())
-                    waiting_to_order_customers[-1].set_position((CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (len(waiting_to_order_customers) - 1), CUSTOMER_END_PATH_QUEUE[1]))
+                    waiting_to_order_customers[-1].set_position((CUSTOMER_END_PATH_QUEUE[0] + QUEUE_OFFSET * (
+                                len(waiting_to_order_customers) - 1), CUSTOMER_END_PATH_QUEUE[1]))
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for topping in toppings_stage_button_dictionary:  # A cycle checking if one of toppings has taken
                     if toppings_stage_button_dictionary[topping].mouse_on_button(mouse_pos):
@@ -600,11 +612,14 @@ def stage_toppings():
                         if intent != current_stage:
                             current_stage = intent
                             return None
-                if shawarmas_at_stages[current_stage] is not None and\
+                if shawarmas_at_stages[current_stage] is not None and \
                         toppings_falling_area_button.mouse_on_button(mouse_pos) and spoon_cursor:
                     falling_ingredients.append(FallingIngredient(current_topping, mouse_pos[0] - LAFFA_X_POS,
-                                                                 mouse_pos[1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET, mouse_pos[1]))
-                if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and len(waiting_to_take_away_customers) > 0 and shawarmas_at_stages[current_stage] is not None:
+                                                                 mouse_pos[
+                                                                     1] - LAFFA_Y_POS + TOPPINGS_ABOVE_LAFFA_OFFSET,
+                                                                 mouse_pos[1]))
+                if not spoon_cursor and checkmark_button.mouse_on_button(mouse_pos) and len(
+                        waiting_to_take_away_customers) > 0 and shawarmas_at_stages[current_stage] is not None:
                     shawarmas_at_stages["take order"] = shawarmas_at_stages[current_stage]
                     shawarmas_at_stages[current_stage] = None
                     current_stage = "take order"
@@ -643,8 +658,8 @@ def stage_toppings():
         # Custom cursor bliting and default cursor changing
         if spoon_cursor:
             pygame.mouse.set_visible(False)
-            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or\
-                    toppings_falling_area_button.mouse_on_button(mouse_pos) and\
+            if mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or \
+                    toppings_falling_area_button.mouse_on_button(mouse_pos) and \
                     shawarmas_at_stages[current_stage] is not None:
                 screen.blit(rotated_spoon_images[current_topping], (mouse_pos[0], mouse_pos[1] - SPOON_HEIGHT * 3))
             else:
@@ -652,8 +667,8 @@ def stage_toppings():
         else:
             pygame.mouse.set_visible(True)
 
-            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or\
-                    mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or\
+            if mouse_on_any_button(screen_navigation_button_dictionary, mouse_pos) or \
+                    mouse_on_any_button(toppings_stage_button_dictionary, mouse_pos) or \
                     checkmark_button.mouse_on_button(mouse_pos) and len(waiting_to_take_away_customers) > 0:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
@@ -662,7 +677,8 @@ def stage_toppings():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(
+                waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -671,6 +687,7 @@ def stage_take_order():
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
     my_timer = 500
+    pygame.mixer.Sound("sound/drum roll.mp3").play()
     while current_stage == "take order":
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -680,7 +697,8 @@ def stage_take_order():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if my_timer < 0 and checkmark_button.mouse_on_button(mouse_pos):
                     del waiting_to_take_away_customers[0]
-                    move_the_queue(waiting_to_take_away_customers, (TAKE_AWAY_QUEUE_X_LOCATION, TAKE_AWAY_QUEUE_Y_LOCATION), QUEUE_OFFSET)
+                    move_the_queue(waiting_to_take_away_customers,
+                                   (TAKE_AWAY_QUEUE_X_LOCATION, TAKE_AWAY_QUEUE_Y_LOCATION), QUEUE_OFFSET)
                     current_stage = "queue"
                     shawarmas_at_stages[current_stage] = None
                     return None
@@ -712,8 +730,13 @@ def stage_take_order():
             has_meat = 0
             if waiting_to_take_away_customers[0].get_order().has_meat():
                 has_meat = 1
-            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
+            waiting_to_take_away_customers[0].get_order().show_like_order(
+                waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
+
+
+def stage_difficulty_select():
+    pass
 
 
 # Main function to manage stages
@@ -727,6 +750,8 @@ def main():
             stage_start()
         elif current_stage == "kosher":
             stage_kosher()
+        elif current_stage == "difficulty select":
+            stage_difficulty_select()
         elif current_stage == "queue":
             stage_queue()
         elif current_stage == "order":
@@ -746,6 +771,7 @@ def main():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    global difficulty_setting
     global current_stage
     global new_coming_customer
     global waiting_to_order_customers
