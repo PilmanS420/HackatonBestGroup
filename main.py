@@ -372,7 +372,11 @@ def stage_bread():
         # screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
         # if len(laffa_list) >= 1:
         #     screen.blit(laffa_list[0], (mouse_pos[0], mouse_pos[1]))
-
+        if waiting_to_take_away_customers:
+            has_meat = 0
+            if waiting_to_take_away_customers[0].get_order().has_meat():
+                has_meat = 1
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -552,7 +556,11 @@ def stage_cooking():  # TODO: Find a way to present animation without lags
 
         if len(meat_list) >= 1:
             screen.blit(meat_list[0], (mouse_pos[0] - 100, mouse_pos[1] - 100))
-
+        if waiting_to_take_away_customers:
+            has_meat = 0
+            if waiting_to_take_away_customers[0].get_order().has_meat():
+                has_meat = 1
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 

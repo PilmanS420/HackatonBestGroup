@@ -80,17 +80,18 @@ laffas_order_images = {
 }
 laffas_with_meat_medium_images = {
     "Type 1": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), SHAWARMA_SPEECH_BOX_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), SHAWARMA_SPEECH_BOX_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), SHAWARMA_SPEECH_BOX_SIZE)],
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_1_p3.png"), SHAWARMA_SIZE)],
     "Type 2": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), SHAWARMA_SPEECH_BOX_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), SHAWARMA_SPEECH_BOX_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), SHAWARMA_SPEECH_BOX_SIZE)],
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_2_p3.png"), SHAWARMA_SIZE)],
     "Type 3": [
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), SHAWARMA_SPEECH_BOX_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), SHAWARMA_SPEECH_BOX_SIZE),
-        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), SHAWARMA_SPEECH_BOX_SIZE)]}
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p1.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p2.png"), SHAWARMA_SIZE),
+        pygame.transform.scale(pygame.image.load("images/laffas/laffa_3_p3.png"), SHAWARMA_SIZE)]
+}
 
 laffas_with_meat_small_images = {
     "Type 1": [
