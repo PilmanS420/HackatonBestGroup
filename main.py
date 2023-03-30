@@ -93,6 +93,11 @@ def stage_queue():
         # Showing customers are waiting at nearest queue
         for i in waiting_to_order_customers:
             i.show()
+        if waiting_to_take_away_customers:
+            has_meat = 0
+            if waiting_to_take_away_customers[0].get_order().has_meat():
+                has_meat = 1
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
         clock.tick(60)
 
@@ -149,7 +154,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
 
     background_image = pygame.transform.scale(pygame.image.load("images/background_images/order_background.png"),
                                               (WINDOW_WIDTH, WINDOW_HEIGHT))
-    order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE)
+    order_image = pygame.transform.scale(pygame.image.load("images/other/order.png"), ORDER_SIZE_BIG)
     waiting_to_take_away_customers[-1].change_image("order")
     waiting_to_take_away_customers[-1].set_position(CUSTOMER_POSITION_ORDER)
 
@@ -164,9 +169,8 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
     screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
     screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
     waiting_to_take_away_customers[-1].show()
-    screen.blit(order_image, ORDER_POS)
     waiting_to_take_away_customers[-1].show_text_window(showing_ingredient_type, current_topping_num)
-    waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num)
+    waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num, ORDER_SIZE_BIG)
 
     while current_stage == "order":
         for event in pygame.event.get():
@@ -189,9 +193,8 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                 screen.blit(background_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 screen.blit(screen_buttons_image, (BACKGROUND_SCREENS_X, BACKGROUND_SCREENS_Y))
                 waiting_to_take_away_customers[-1].show()
-                screen.blit(order_image, ORDER_POS)
                 waiting_to_take_away_customers[-1].show_text_window(showing_ingredient_type, current_topping_num)
-                waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num)
+                waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num, ORDER_SIZE_BIG)
                 print(mouse_pos)
                 if on_text_box_button["text box"].mouse_on_button(mouse_pos):
                     waiting_to_take_away_customers[-1].change_image("order")
@@ -204,7 +207,7 @@ def stage_order():  # TODO: make queue update to show customers at queue at diff
                         showing_ingredient_type = "topping"
                     else:
                         current_topping_num += 1
-                    waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num)
+                    waiting_to_take_away_customers[-1].get_order().show_like_order(current_topping_num, ORDER_SIZE_BIG)
                     if current_topping_num == toppings_count:
                         current_stage = "queue"
                         waiting_to_take_away_customers[-1].change_image("queue")
@@ -647,6 +650,11 @@ def stage_toppings():
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        if waiting_to_take_away_customers:
+            has_meat = 0
+            if waiting_to_take_away_customers[0].get_order().has_meat():
+                has_meat = 1
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
@@ -692,7 +700,11 @@ def stage_take_order():
                 waiting_to_take_away_customers[0].change_image("reaction", "worst")
         else:
             screen.blit(checkmark_image, CHECKMARK_POSITION)
-        waiting_to_take_away_customers[0].show()
+        if waiting_to_take_away_customers:
+            has_meat = 0
+            if waiting_to_take_away_customers[0].get_order().has_meat():
+                has_meat = 1
+            waiting_to_take_away_customers[0].get_order().show_like_order(waiting_to_take_away_customers[0].get_order().get_toppings_count() + has_meat, ORDER_SIZE)
         pygame.display.flip()
 
 
