@@ -80,8 +80,12 @@ def set_mouse_on(mouse_pos, dictionary1, dictionary2=None, dictionary3=None, dic
     mouse_off()
 
 
-def come_new_customer(timer_counter):
-    return timer_counter % NEW_CUSTOMERS_COOLDOWN == 0 and len(waiting_to_take_away_customers) + len(waiting_to_order_customers) < 5
+def come_new_customer(timer_counter, difficulty_setting="MEDIUM"):
+    if difficulty_setting == "HARD":
+        return timer_counter % NEW_CUSTOMERS_COOLDOWN_HARD == 0 and len(waiting_to_take_away_customers) + len(waiting_to_order_customers) < 5
+    elif difficulty_setting == "MEDIUM":
+        return timer_counter % NEW_CUSTOMERS_COOLDOWN_MEDIUM == 0 and len(waiting_to_take_away_customers) + len(waiting_to_order_customers) < 5
+    return timer_counter % NEW_CUSTOMERS_COOLDOWN_EASY == 0 and len(waiting_to_take_away_customers) + len(waiting_to_order_customers) < 5
 
 
 def move_the_queue(queue, queue_first_position, queue_offset):
@@ -187,4 +191,5 @@ def sum_tuples(ls: List) ->tuple:
 def settings_screen():
     in_settings_screen = True
     while in_settings_screen:
+
         in_settings_screen = False
